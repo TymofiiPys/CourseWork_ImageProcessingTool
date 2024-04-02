@@ -76,3 +76,5 @@ CMakeLists.txt.user*
 # I use this file to guide myself on writing md files :)
 MDTutorial.md
 
+# stores paths to recently opened images
+recent.txt

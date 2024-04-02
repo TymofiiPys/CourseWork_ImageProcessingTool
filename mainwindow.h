@@ -21,17 +21,23 @@ private slots:
    * \brief Exit program and prompt for saving
    * \internal
    */
-  void on_actionExit_triggered();
+  void onActionExitTriggered();
 
   /*!
    * \brief Open file for processing, prompt for saving already opened one
    * \internal
    */
-  void on_actionOpenFile_triggered();
+  void onActionOpenFileTriggered();
+
+  void onRecentImagePathTriggered(QString& filename);
 
 private:
   Ui::MainWindow *ui;
 
-    QImage openedImage;
+  QImage openedImage;
+
+  std::vector<QAction *> recentImagesActions;
+
+  void getRecentImagesToMenu();
 };
 #endif // MAINWINDOW_H

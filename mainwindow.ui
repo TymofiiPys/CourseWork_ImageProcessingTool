@@ -23,6 +23,9 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="dragMode">
+       <enum>QGraphicsView::ScrollHandDrag</enum>
+      </property>
      </widget>
     </item>
    </layout>
@@ -40,7 +43,13 @@
     <property name="title">
      <string>Файл</string>
     </property>
+    <widget class="QMenu" name="menuRecentlyOpen">
+     <property name="title">
+      <string>Недавно відкриті</string>
+     </property>
+    </widget>
     <addaction name="actionOpenFile"/>
+    <addaction name="menuRecentlyOpen"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
