@@ -18,11 +18,11 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::onActionExitTriggered() {
+void MainWindow::on_actionExit_triggered() {
     QApplication::exit();
 }
 
-void MainWindow::onActionOpenFileTriggered() {
+void MainWindow::on_actionOpenFile_triggered() {
     QString imagePath
         = QFileDialog::getOpenFileName(this,
                                        QString("Відкрити файл..."),

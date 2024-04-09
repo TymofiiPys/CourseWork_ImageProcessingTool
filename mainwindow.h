@@ -20,13 +20,13 @@ class MainWindow : public QMainWindow {
     /*!
      * \brief Exit program and prompt for saving
      */
-    void onActionExitTriggered();
+    void on_actionExit_triggered();
 
     /*!
      * \brief Open file for processing, prompt for saving already opened one
      * \internal
      */
-    void onActionOpenFileTriggered();
+    void on_actionOpenFile_triggered();
 
     /*!
      * \brief opens an image wil filepath show in menu
