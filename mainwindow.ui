@@ -39,7 +39,7 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>Файл</string>
     </property>
@@ -53,7 +53,21 @@
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
-   <addaction name="menu"/>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>Перегляд</string>
+    </property>
+    <widget class="QMenu" name="menuScaling">
+     <property name="title">
+      <string>Масштаб</string>
+     </property>
+     <addaction name="actionZoomIn"/>
+     <addaction name="actionZoomOut"/>
+    </widget>
+    <addaction name="menuScaling"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
@@ -73,6 +87,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="text">
+    <string>Збільшити</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="text">
+    <string>Зменшити</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
  </widget>

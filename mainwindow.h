@@ -34,6 +34,10 @@ class MainWindow : public QMainWindow {
      */
     void onRecentImagePathTriggered(QString filename);
 
+    void on_actionZoomIn_triggered();
+
+    void on_actionZoomOut_triggered();
+
   private:
     Ui::MainWindow *ui;
 
