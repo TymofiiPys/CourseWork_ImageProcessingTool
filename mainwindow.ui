@@ -23,6 +23,12 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>CrossCursor</cursorShape>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
       <property name="dragMode">
        <enum>QGraphicsView::ScrollHandDrag</enum>
       </property>
@@ -51,7 +57,11 @@
     <addaction name="actionOpenFile"/>
     <addaction name="menuRecentlyOpen"/>
     <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -103,6 +113,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Зберегти</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Зберегти як</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>

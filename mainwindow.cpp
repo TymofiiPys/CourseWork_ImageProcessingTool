@@ -33,6 +33,7 @@ void MainWindow::on_actionOpenFile_triggered() {
         this->openedImage = QImage(imagePath);
         std::string imgPath = imagePath.toStdString();
         savePathToFile(imgPath);
+        this->openedImagePath = std::move(imagePath);
 
         QGraphicsScene *imageViewScene = new QGraphicsScene(this);
         imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
@@ -83,5 +84,22 @@ void MainWindow::on_actionZoomOut_triggered() {
     if (!this->openedImage.isNull()) {
         qreal step = 0.8;
         ui->imageView->scale(step, step);
+    }
+}
+
+void MainWindow::on_actionSave_triggered() {
+    this->openedImage.save(this->openedImagePath);
+}
+
+void MainWindow::on_actionSaveAs_triggered() {
+    QString imagePath
+        = QFileDialog::getSaveFileName(this,
+                                       QString("Зберегти як..."),
+                                       this->openedImagePath.first(
+                                           this->openedImagePath.lastIndexOf("/")),
+                                       QString("Зображення (*.jpg *.jpeg *.png *.bmp *.gif)"));
+    if (imagePath != "") {
+        this->openedImage.save(imagePath);
+        this->openedImagePath = imagePath;
     }
 }

@@ -38,12 +38,18 @@ class MainWindow : public QMainWindow {
 
     void on_actionZoomOut_triggered();
 
+    void on_actionSave_triggered();
+
+    void on_actionSaveAs_triggered();
+
   private:
     Ui::MainWindow *ui;
 
     /*!
      * \brief openedImage is a currently opened image
      */
+    QString openedImagePath;
+
     QImage openedImage;
 
     std::vector<QAction *> recentImagesActions;
