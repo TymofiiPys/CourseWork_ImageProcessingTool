@@ -8,6 +8,6 @@ const std::string kRecentListFile = "recent.txt";
 
 std::forward_list<std::string> getRecentImages();
 
-void savePathToFile(std::string& filePath);
+void savePathToFile(std::string &filePath);
 
 #endif // RECENTIMAGES_H

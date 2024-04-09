@@ -10,34 +10,43 @@ class MainWindow;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  MainWindow(QWidget *parent = nullptr);
-  ~MainWindow();
+  public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
-private slots:
-  /*!
-   * \brief Exit program and prompt for saving
-   * \internal
-   */
-  void onActionExitTriggered();
+  private slots:
+    /*!
+     * \brief Exit program and prompt for saving
+     */
+    void onActionExitTriggered();
 
-  /*!
-   * \brief Open file for processing, prompt for saving already opened one
-   * \internal
-   */
-  void onActionOpenFileTriggered();
+    /*!
+     * \brief Open file for processing, prompt for saving already opened one
+     * \internal
+     */
+    void onActionOpenFileTriggered();
 
-  void onRecentImagePathTriggered(QString& filename);
+    /*!
+     * \brief opens an image wil filepath show in menu
+     * \param filename filename chosen for opening
+     */
+    void onRecentImagePathTriggered(QString filename);
 
-private:
-  Ui::MainWindow *ui;
+  private:
+    Ui::MainWindow *ui;
 
-  QImage openedImage;
+    /*!
+     * \brief openedImage is a currently opened image
+     */
+    QImage openedImage;
 
-  std::vector<QAction *> recentImagesActions;
+    std::vector<QAction *> recentImagesActions;
 
-  void getRecentImagesToMenu();
+    /*!
+     * \brief shows up recent images filepaths in the menu
+     */
+    void getRecentImagesToMenu();
 };
 #endif // MAINWINDOW_H
