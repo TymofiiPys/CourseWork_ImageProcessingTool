@@ -78,3 +78,6 @@ MDTutorial.md
 
 # stores paths to recently opened images
 recent.txt
+
+# build dir
+build/
