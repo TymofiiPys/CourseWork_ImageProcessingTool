@@ -81,3 +81,6 @@ recent.txt
 
 # build dir
 build/
+
+# config file (created automatically on first launch if does not exist)
+app.config

@@ -9,6 +9,7 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+// TODO: config
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
