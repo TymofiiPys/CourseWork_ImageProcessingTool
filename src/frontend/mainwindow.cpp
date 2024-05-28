@@ -36,6 +36,7 @@ void MainWindow::on_actionOpenFile_triggered() {
 
 void MainWindow::getRecentImagesToMenu() {
     QStringList recentImages = getRecentImages();
+    ui->menuRecentlyOpen->clear();
     for (qsizetype i = recentImages.size() - 1; i >= 0; i--) {
         QAction *imageAction = new QAction(recentImages.at(i), this);
         connect(imageAction, &QAction::triggered, this, [imageAction, this]() {
@@ -48,26 +49,34 @@ void MainWindow::getRecentImagesToMenu() {
 }
 
 void MainWindow::openImage(QString &imagePath) {
+    // Open image and save the filename to recents file
     this->openedImage = QImage(imagePath);
     savePathToFile(imagePath);
     this->openedImagePath = std::move(imagePath);
 
+    // Show the image on a QGraphicsView
     QGraphicsScene *imageViewScene = new QGraphicsScene(this);
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
+
+    // Fit the image to the QGraphicsView
     int viewWidth = ui->imageView->width();
     int viewHeight = ui->imageView->height();
     int imageWidth = this->openedImage.rect().width();
     int imageHeight = this->openedImage.rect().height();
     qreal scaler = 1;
+    qreal imageDimTakesViewDimAmt = 0.8;
     if (imageWidth > imageHeight) {
-        scaler = 0.8 * viewWidth / this->openedImage.rect().width();
+        scaler = imageDimTakesViewDimAmt * viewWidth / this->openedImage.rect().width();
     } else {
-        scaler = 0.8 * viewHeight / this->openedImage.rect().height();
+        scaler = imageDimTakesViewDimAmt * viewHeight / this->openedImage.rect().height();
     }
     ui->imageView->resetTransform();
     ui->imageView->scale(scaler, scaler);
+
+    // Refresh recent images menu
+    this->getRecentImagesToMenu();
 }
 
 void MainWindow::onRecentImagePathTriggered(QString filename) {
