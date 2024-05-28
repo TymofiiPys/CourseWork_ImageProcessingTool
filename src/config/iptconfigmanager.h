@@ -1,6 +1,8 @@
 #ifndef IPTCONFIGMANAGER_H
 #define IPTCONFIGMANAGER_H
 
+#include <memory>
+
 #include <QSettings>
 #include <QString>
 
@@ -11,17 +13,15 @@
 class IPTConfigManager {
   private:
     IPTConfigManager();
-    ~IPTConfigManager();
-    // static IPTConfigManager *instance;
+    ~IPTConfigManager() = default;
     const QString kConfigFile = "app.config";
-    QSettings *settings;
+    std::unique_ptr<QSettings> settings;
     void setDefaultValues() const;
 
   public:
     IPTConfigManager(const IPTConfigManager &) = delete;
     void operator=(const IPTConfigManager &) = delete;
     static IPTConfigManager &getInstance();
-    // void setRecentImgFile(const QString &file);
     void setRecentImgDir(const QString &dir);
     QString getRecentImgFile() const;
     QString getRecentImgDir() const;

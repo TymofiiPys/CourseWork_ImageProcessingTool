@@ -3,18 +3,12 @@
 
 #include "iptconfigmanager.h"
 
-// IPTConfigManager *IPTConfigManager::instance = nullptr;
-
 IPTConfigManager::IPTConfigManager() {
-    this->settings = new QSettings(kConfigFile, QSettings::IniFormat);
+    this->settings = std::make_unique<QSettings>(kConfigFile, QSettings::IniFormat);
 
     if (!QFile::exists(kConfigFile)) {
         setDefaultValues();
     }
-}
-
-IPTConfigManager::~IPTConfigManager() {
-    delete settings;
 }
 
 IPTConfigManager &IPTConfigManager::getInstance() {
@@ -28,11 +22,6 @@ void IPTConfigManager::setDefaultValues() const {
     settings->setValue("max_recent_img", 15);
     settings->sync();
 }
-
-// void IPTConfigManager::setRecentImgFile(const QString &file) {
-//     settings->setValue("recent_img_file", file);
-//     settings->sync();
-// }
 
 void IPTConfigManager::setRecentImgDir(const QString &dir) {
     settings->setValue("recent_img_dir", dir);

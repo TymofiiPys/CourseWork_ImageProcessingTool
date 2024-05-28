@@ -11,8 +11,9 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-// TODO: config
 // TODO: memento pattern for storing image versions
+/* TODO: adapter for calling image functions which use double 2d vectors
+* for parameters but we have image) */
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
