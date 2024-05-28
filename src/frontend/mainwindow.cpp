@@ -49,7 +49,7 @@ void MainWindow::getRecentImagesToMenu() {
     }
 }
 
-void MainWindow::openImage(QString &imagePath) {
+void MainWindow::openImage(const QString &imagePath) {
     // Open image and save the filename to recents file
     this->openedImage = QImage(imagePath);
     savePathToFile(imagePath);
@@ -83,7 +83,7 @@ void MainWindow::openImage(QString &imagePath) {
         this->openedImagePath.first(this->openedImagePath.lastIndexOf("/")));
 }
 
-void MainWindow::onRecentImagePathTriggered(QString filename) {
+void MainWindow::onRecentImagePathTriggered(const QString filename) {
     this->openImage(filename);
 }
 

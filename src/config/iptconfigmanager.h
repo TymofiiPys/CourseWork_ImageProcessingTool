@@ -14,15 +14,15 @@ class IPTConfigManager {
     static IPTConfigManager *instance;
     const QString kConfigFile = "app.config";
     QSettings *settings;
-    void setDefaultValues();
+    void setDefaultValues() const;
 
   public:
     static IPTConfigManager *getInstance();
     // void setRecentImgFile(const QString &file);
     void setRecentImgDir(const QString &dir);
-    QString getRecentImgFile();
-    QString getRecentImgDir();
-    int getMaxRecentImg();
+    QString getRecentImgFile() const;
+    QString getRecentImgDir() const;
+    int getMaxRecentImg() const;
 };
 
 #endif // IPTCONFIGMANAGER_H

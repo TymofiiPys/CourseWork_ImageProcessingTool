@@ -20,7 +20,7 @@ IPTConfigManager *IPTConfigManager::getInstance() {
     return instance;
 }
 
-void IPTConfigManager::setDefaultValues() {
+void IPTConfigManager::setDefaultValues() const {
     settings->setValue("recent_img_file", "recent.txt");
     settings->setValue("recent_img_dir", QDir::homePath());
     settings->setValue("max_recent_img", 15);
@@ -37,14 +37,14 @@ void IPTConfigManager::setRecentImgDir(const QString &dir) {
     settings->sync();
 }
 
-QString IPTConfigManager::getRecentImgFile() {
+QString IPTConfigManager::getRecentImgFile() const {
     return settings->value("recent_img_file", "recent.txt").toString();
 }
 
-QString IPTConfigManager::getRecentImgDir() {
+QString IPTConfigManager::getRecentImgDir() const {
     return settings->value("recent_img_dir", QDir::homePath()).toString();
 }
 
-int IPTConfigManager::getMaxRecentImg() {
+int IPTConfigManager::getMaxRecentImg() const {
     return settings->value("max_recent_img", 15).toInt();
 }

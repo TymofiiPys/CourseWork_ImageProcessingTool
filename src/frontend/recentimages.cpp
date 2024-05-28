@@ -22,7 +22,7 @@ QStringList getRecentImages() {
     }
 }
 
-void savePathToFile(QString &filePath) {
+void savePathToFile(const QString &filePath) {
     QFile fileRecent(kRecentListFile);
     QString tempFilePath = "temp.txt";
     QFile fileTemp(tempFilePath);

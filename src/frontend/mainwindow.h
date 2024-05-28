@@ -36,7 +36,7 @@ class MainWindow : public QMainWindow {
      * \brief opens an image wil filepath show in menu
      * \param filename filename chosen for opening
      */
-    void onRecentImagePathTriggered(QString filename);
+    void onRecentImagePathTriggered(const QString filename);
 
     void on_actionZoomIn_triggered();
 
@@ -64,6 +64,6 @@ class MainWindow : public QMainWindow {
      */
     void getRecentImagesToMenu();
 
-    void openImage(QString &filename);
+    void openImage(const QString &filename);
 };
 #endif // MAINWINDOW_H

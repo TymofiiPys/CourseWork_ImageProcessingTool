@@ -11,6 +11,6 @@ const int kMaxRecentImgs = IPTConfigManager::getInstance()->getMaxRecentImg();
 
 QStringList getRecentImages();
 
-void savePathToFile(QString &filePath);
+void savePathToFile(const QString &filePath);
 
 #endif // RECENTIMAGES_H
