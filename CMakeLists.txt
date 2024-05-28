@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         .gitignore
         src/frontend/recentimages.h
         src/frontend/recentimages.cpp
+        src/config/iptconfigmanager.h src/config/iptconfigmanager.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CourseWork_ImageProcessingTool APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

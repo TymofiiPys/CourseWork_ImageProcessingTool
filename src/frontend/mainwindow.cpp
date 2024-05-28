@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    this->config = IPTConfigManager::getInstance();
     this->getRecentImagesToMenu();
 }
 
@@ -26,7 +27,7 @@ void MainWindow::on_actionOpenFile_triggered() {
     QString imagePath
         = QFileDialog::getOpenFileName(this,
                                        QString("Відкрити файл..."),
-                                       QDir::homePath(),
+                                       this->config->getRecentImgDir(),
                                        QString("Зображення (*.jpg *.jpeg *.png *.bmp *.gif)"));
 
     if (imagePath != "") {
@@ -77,6 +78,9 @@ void MainWindow::openImage(QString &imagePath) {
 
     // Refresh recent images menu
     this->getRecentImagesToMenu();
+    // Update recent image directory
+    this->config->setRecentImgDir(
+        this->openedImagePath.first(this->openedImagePath.lastIndexOf("/")));
 }
 
 void MainWindow::onRecentImagePathTriggered(QString filename) {
@@ -105,8 +109,7 @@ void MainWindow::on_actionSaveAs_triggered() {
     QString imagePath
         = QFileDialog::getSaveFileName(this,
                                        QString("Зберегти як..."),
-                                       this->openedImagePath.first(
-                                           this->openedImagePath.lastIndexOf("/")),
+                                       this->config->getRecentImgDir(),
                                        QString("Зображення (*.jpg *.jpeg *.png *.bmp *.gif)"));
     if (imagePath != "") {
         this->openedImage.save(imagePath);

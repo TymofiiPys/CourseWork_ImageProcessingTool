@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "../config/iptconfigmanager.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -10,6 +12,7 @@ class MainWindow;
 QT_END_NAMESPACE
 
 // TODO: config
+// TODO: memento pattern for storing image versions
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -46,11 +49,12 @@ class MainWindow : public QMainWindow {
   private:
     Ui::MainWindow *ui;
 
+    IPTConfigManager *config;
+
+    QString openedImagePath;
     /*!
      * \brief openedImage is a currently opened image
      */
-    QString openedImagePath;
-
     QImage openedImage;
 
     std::vector<QAction *> recentImagesActions;

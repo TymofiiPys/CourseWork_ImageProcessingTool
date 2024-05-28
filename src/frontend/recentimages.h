@@ -4,8 +4,10 @@
 #include <QString>
 #include <QStringList>
 
-const QString kRecentListFile = "recent.txt";
-const int kMaxRecentImgs = 15;
+#include "../config/iptconfigmanager.h"
+
+const QString kRecentListFile = IPTConfigManager::getInstance()->getRecentImgFile();
+const int kMaxRecentImgs = IPTConfigManager::getInstance()->getMaxRecentImg();
 
 QStringList getRecentImages();
 
