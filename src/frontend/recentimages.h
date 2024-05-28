@@ -5,6 +5,7 @@
 #include <QStringList>
 
 const QString kRecentListFile = "recent.txt";
+const int kMaxRecentImgs = 15;
 
 QStringList getRecentImages();
 

@@ -30,26 +30,7 @@ void MainWindow::on_actionOpenFile_triggered() {
                                        QString("Зображення (*.jpg *.jpeg *.png *.bmp *.gif)"));
 
     if (imagePath != "") {
-        this->openedImage = QImage(imagePath);
-        savePathToFile(imagePath);
-        this->openedImagePath = std::move(imagePath);
-
-        QGraphicsScene *imageViewScene = new QGraphicsScene(this);
-        imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
-        imageViewScene->setSceneRect(this->openedImage.rect());
-        ui->imageView->setScene(imageViewScene);
-        int viewWidth = ui->imageView->width();
-        int viewHeight = ui->imageView->height();
-        int imageWidth = this->openedImage.rect().width();
-        int imageHeight = this->openedImage.rect().height();
-        qreal scaler = 1;
-        if (imageWidth > imageHeight) {
-            scaler = 0.8 * viewWidth / this->openedImage.rect().width();
-        } else {
-            scaler = 0.8 * viewHeight / this->openedImage.rect().height();
-        }
-        ui->imageView->resetTransform();
-        ui->imageView->scale(scaler, scaler);
+        this->openImage(imagePath);
     }
 }
 
@@ -66,10 +47,31 @@ void MainWindow::getRecentImagesToMenu() {
     }
 }
 
+void MainWindow::openImage(QString &imagePath) {
+    this->openedImage = QImage(imagePath);
+    savePathToFile(imagePath);
+    this->openedImagePath = std::move(imagePath);
+
+    QGraphicsScene *imageViewScene = new QGraphicsScene(this);
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
+    int viewWidth = ui->imageView->width();
+    int viewHeight = ui->imageView->height();
+    int imageWidth = this->openedImage.rect().width();
+    int imageHeight = this->openedImage.rect().height();
+    qreal scaler = 1;
+    if (imageWidth > imageHeight) {
+        scaler = 0.8 * viewWidth / this->openedImage.rect().width();
+    } else {
+        scaler = 0.8 * viewHeight / this->openedImage.rect().height();
+    }
+    ui->imageView->resetTransform();
+    ui->imageView->scale(scaler, scaler);
+}
+
 void MainWindow::onRecentImagePathTriggered(QString filename) {
-    QMessageBox msgBox;
-    msgBox.setText(filename);
-    msgBox.exec();
+    this->openImage(filename);
 }
 
 void MainWindow::on_actionZoomIn_triggered() {

@@ -59,5 +59,7 @@ class MainWindow : public QMainWindow {
      * \brief shows up recent images filepaths in the menu
      */
     void getRecentImagesToMenu();
+
+    void openImage(QString &filename);
 };
 #endif // MAINWINDOW_H

@@ -23,10 +23,35 @@ QStringList getRecentImages() {
 }
 
 void savePathToFile(QString &filePath) {
-    QFile file(kRecentListFile);
-    if (file.open(QIODeviceBase::Append | QIODeviceBase::Text)) {
-        QTextStream textStream(&file);
-        textStream << Qt::endl << filePath;
-        file.close();
+    QFile fileRecent(kRecentListFile);
+    QString tempFilePath = "temp.txt";
+    QFile fileTemp(tempFilePath);
+    // Recent filenames amount
+    int recentFNs = getRecentImages().size();
+    bool filePathPresent = getRecentImages().contains(filePath);
+    if (filePathPresent)
+        recentFNs--;
+    if (fileRecent.open(QIODevice::ReadOnly | QIODevice::Text)
+        && fileTemp.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream in(&fileRecent);
+        QTextStream out(&fileTemp);
+
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (recentFNs >= kMaxRecentImgs) {
+                recentFNs--;
+            } else if (line != filePath) {
+                out << line << "\n";
+            }
+        }
+        fileRecent.close();
+        fileTemp.close();
+    }
+    QFile::remove(kRecentListFile);
+    QFile::rename(tempFilePath, kRecentListFile);
+    if (fileRecent.open(QIODeviceBase::Append | QIODeviceBase::Text)) {
+        QTextStream textStream(&fileRecent);
+        textStream << filePath;
+        fileRecent.close();
     }
 }
