@@ -1,26 +1,32 @@
 #include "recentimages.h"
 
-#include <exception>
-#include <forward_list>
-#include <fstream>
-#include <iterator>
+#include <QDebug>
+#include <QFile>
+#include <QString>
+#include <QTextStream>
 
-std::forward_list<std::string> getRecentImages() {
-    std::ifstream begin(kRecentListFile);
-    if (begin.is_open()) {
-        auto ret = std::forward_list<std::string>(std::istream_iterator<std::string>(begin),
-                                                  std::istream_iterator<std::string>());
-        begin.close();
-        return ret;
+QStringList getRecentImages() {
+    QFile file(kRecentListFile);
+    if (file.open(QIODeviceBase::ReadOnly | QIODeviceBase::Text)) {
+        QTextStream textStream(&file);
+        QStringList filenameList = textStream.readAll().split("\n");
+        qDebug() << "Opened and read successfully";
+        file.close();
+        return filenameList;
+    } else {
+        file.open(QIODeviceBase::NewOnly);
+        qDebug() << "Created new file";
+        file.close();
+        QStringList list("oopsie");
+        return list;
     }
-    std::forward_list<std::string> oops;
-    oops.push_front("oopsie");
-    begin.close();
-    return oops;
 }
 
-void savePathToFile(std::string &filePath) {
-    std::ofstream recent(kRecentListFile, std::ios_base::out | std::ios_base::app);
-    recent << filePath << std::endl;
-    recent.close();
+void savePathToFile(QString &filePath) {
+    QFile file(kRecentListFile);
+    if (file.open(QIODeviceBase::Append | QIODeviceBase::Text)) {
+        QTextStream textStream(&file);
+        textStream << Qt::endl << filePath;
+        file.close();
+    }
 }

@@ -31,8 +31,7 @@ void MainWindow::on_actionOpenFile_triggered() {
 
     if (imagePath != "") {
         this->openedImage = QImage(imagePath);
-        std::string imgPath = imagePath.toStdString();
-        savePathToFile(imgPath);
+        savePathToFile(imagePath);
         this->openedImagePath = std::move(imagePath);
 
         QGraphicsScene *imageViewScene = new QGraphicsScene(this);
@@ -55,9 +54,9 @@ void MainWindow::on_actionOpenFile_triggered() {
 }
 
 void MainWindow::getRecentImagesToMenu() {
-    std::forward_list<std::string> recentImages = getRecentImages();
-    for (std::string &image : recentImages) {
-        QAction *imageAction = new QAction(QString::fromStdString(image), this);
+    QStringList recentImages = getRecentImages();
+    for (qsizetype i = recentImages.size() - 1; i >= 0; i--) {
+        QAction *imageAction = new QAction(recentImages.at(i), this);
         connect(imageAction, &QAction::triggered, this, [imageAction, this]() {
             onRecentImagePathTriggered(imageAction->text());
         });

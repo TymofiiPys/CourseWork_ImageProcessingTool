@@ -1,13 +1,13 @@
 #ifndef RECENTIMAGES_H
 #define RECENTIMAGES_H
 
-#include <forward_list>
-#include <string>
+#include <QString>
+#include <QStringList>
 
-const std::string kRecentListFile = "recent.txt";
+const QString kRecentListFile = "recent.txt";
 
-std::forward_list<std::string> getRecentImages();
+QStringList getRecentImages();
 
-void savePathToFile(std::string &filePath);
+void savePathToFile(QString &filePath);
 
 #endif // RECENTIMAGES_H
