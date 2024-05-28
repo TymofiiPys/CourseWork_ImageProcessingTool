@@ -3,7 +3,7 @@
 
 #include "iptconfigmanager.h"
 
-IPTConfigManager *IPTConfigManager::instance = nullptr;
+// IPTConfigManager *IPTConfigManager::instance = nullptr;
 
 IPTConfigManager::IPTConfigManager() {
     this->settings = new QSettings(kConfigFile, QSettings::IniFormat);
@@ -13,10 +13,12 @@ IPTConfigManager::IPTConfigManager() {
     }
 }
 
-IPTConfigManager *IPTConfigManager::getInstance() {
-    if (instance == nullptr) {
-        instance = new IPTConfigManager();
-    }
+IPTConfigManager::~IPTConfigManager() {
+    delete settings;
+}
+
+IPTConfigManager &IPTConfigManager::getInstance() {
+    static IPTConfigManager instance;
     return instance;
 }
 

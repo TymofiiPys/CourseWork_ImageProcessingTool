@@ -6,8 +6,8 @@
 
 #include "../config/iptconfigmanager.h"
 
-const QString kRecentListFile = IPTConfigManager::getInstance()->getRecentImgFile();
-const int kMaxRecentImgs = IPTConfigManager::getInstance()->getMaxRecentImg();
+const QString kRecentListFile = IPTConfigManager::getInstance().getRecentImgFile();
+const int kMaxRecentImgs = IPTConfigManager::getInstance().getMaxRecentImg();
 
 QStringList getRecentImages();
 

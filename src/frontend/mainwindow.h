@@ -49,7 +49,7 @@ class MainWindow : public QMainWindow {
   private:
     Ui::MainWindow *ui;
 
-    IPTConfigManager *config;
+    IPTConfigManager &config = IPTConfigManager::getInstance();
 
     QString openedImagePath;
     /*!

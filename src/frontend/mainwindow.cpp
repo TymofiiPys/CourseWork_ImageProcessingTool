@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    this->config = IPTConfigManager::getInstance();
     this->getRecentImagesToMenu();
 }
 
@@ -27,7 +26,7 @@ void MainWindow::on_actionOpenFile_triggered() {
     QString imagePath
         = QFileDialog::getOpenFileName(this,
                                        QString("Відкрити файл..."),
-                                       this->config->getRecentImgDir(),
+                                       this->config.getRecentImgDir(),
                                        QString("Зображення (*.jpg *.jpeg *.png *.bmp *.gif)"));
 
     if (imagePath != "") {
@@ -38,8 +37,9 @@ void MainWindow::on_actionOpenFile_triggered() {
 void MainWindow::getRecentImagesToMenu() {
     QStringList recentImages = getRecentImages();
     ui->menuRecentlyOpen->clear();
-    for (qsizetype i = recentImages.size() - 1; i >= 0; i--) {
-        QAction *imageAction = new QAction(recentImages.at(i), this);
+    // Create actions for each recent image (list is read in reverse)
+    for (auto i = recentImages.rbegin(); i != recentImages.rend(); ++i) {
+        QAction *imageAction = new QAction(*i, this);
         connect(imageAction, &QAction::triggered, this, [imageAction, this]() {
             onRecentImagePathTriggered(imageAction->text());
         });
@@ -67,11 +67,11 @@ void MainWindow::openImage(const QString &imagePath) {
     int imageWidth = this->openedImage.rect().width();
     int imageHeight = this->openedImage.rect().height();
     qreal scaler = 1;
-    qreal imageDimTakesViewDimAmt = 0.8;
+    qreal zoomRatio = 0.8;
     if (imageWidth > imageHeight) {
-        scaler = imageDimTakesViewDimAmt * viewWidth / this->openedImage.rect().width();
+        scaler = zoomRatio * viewWidth / this->openedImage.rect().width();
     } else {
-        scaler = imageDimTakesViewDimAmt * viewHeight / this->openedImage.rect().height();
+        scaler = zoomRatio * viewHeight / this->openedImage.rect().height();
     }
     ui->imageView->resetTransform();
     ui->imageView->scale(scaler, scaler);
@@ -79,11 +79,11 @@ void MainWindow::openImage(const QString &imagePath) {
     // Refresh recent images menu
     this->getRecentImagesToMenu();
     // Update recent image directory
-    this->config->setRecentImgDir(
+    this->config.setRecentImgDir(
         this->openedImagePath.first(this->openedImagePath.lastIndexOf("/")));
 }
 
-void MainWindow::onRecentImagePathTriggered(const QString filename) {
+inline void MainWindow::onRecentImagePathTriggered(const QString filename) {
     this->openImage(filename);
 }
 
@@ -109,7 +109,7 @@ void MainWindow::on_actionSaveAs_triggered() {
     QString imagePath
         = QFileDialog::getSaveFileName(this,
                                        QString("Зберегти як..."),
-                                       this->config->getRecentImgDir(),
+                                       this->config.getRecentImgDir(),
                                        QString("Зображення (*.jpg *.jpeg *.png *.bmp *.gif)"));
     if (imagePath != "") {
         this->openedImage.save(imagePath);

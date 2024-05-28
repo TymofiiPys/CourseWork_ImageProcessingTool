@@ -11,13 +11,16 @@
 class IPTConfigManager {
   private:
     IPTConfigManager();
-    static IPTConfigManager *instance;
+    ~IPTConfigManager();
+    // static IPTConfigManager *instance;
     const QString kConfigFile = "app.config";
     QSettings *settings;
     void setDefaultValues() const;
 
   public:
-    static IPTConfigManager *getInstance();
+    IPTConfigManager(const IPTConfigManager &) = delete;
+    void operator=(const IPTConfigManager &) = delete;
+    static IPTConfigManager &getInstance();
     // void setRecentImgFile(const QString &file);
     void setRecentImgDir(const QString &dir);
     QString getRecentImgFile() const;
