@@ -120,10 +120,8 @@ void MainWindow::on_actionSaveAs_triggered() {
 }
 
 void MainWindow::on_actionInvertColor_triggered() {
-    qDebug() << "Before: " << openedImage.pixel(0, 0) << Qt::endl;
     ImageProcessorWrapper::invertColor(openedImage);
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
-    qDebug() << "After: " << openedImage.pixel(0, 0) << Qt::endl;
 }
