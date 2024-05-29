@@ -29,6 +29,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/frontend/recentimages.h
         src/frontend/recentimages.cpp
         src/config/iptconfigmanager.h src/config/iptconfigmanager.cpp
+        src/imgproc/invert.h
+        src/imgproc/invert.cpp
+        src/frontend/imageprocessorwrapper.h src/frontend/imageprocessorwrapper.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CourseWork_ImageProcessingTool APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
