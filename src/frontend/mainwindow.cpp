@@ -52,7 +52,8 @@ void MainWindow::getRecentImagesToMenu() {
 
 void MainWindow::openImage(const QString &imagePath) {
     // Open image and save the filename to recents file
-    this->openedImage = QImage(imagePath);
+    this->openedImage.load(imagePath);
+    this->openedImage.convertTo(QImage::Format_RGB888);
     savePathToFile(imagePath);
     this->openedImagePath = std::move(imagePath);
 
