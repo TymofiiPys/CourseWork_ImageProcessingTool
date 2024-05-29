@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QGraphicsScene>
 #include <QMainWindow>
 
 #include "../config/iptconfigmanager.h"
@@ -47,6 +48,8 @@ class MainWindow : public QMainWindow {
 
     void on_actionSaveAs_triggered();
 
+    void on_actionInvertColor_triggered();
+
   private:
     Ui::MainWindow *ui;
 
@@ -57,6 +60,8 @@ class MainWindow : public QMainWindow {
      * \brief openedImage is a currently opened image
      */
     QImage openedImage;
+
+    QGraphicsScene *imageViewScene;
 
     std::vector<QAction *> recentImagesActions;
 

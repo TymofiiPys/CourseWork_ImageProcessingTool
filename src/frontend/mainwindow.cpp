@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QString>
 
+#include "imageprocessorwrapper.h"
 #include "recentimages.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -56,7 +57,7 @@ void MainWindow::openImage(const QString &imagePath) {
     this->openedImagePath = std::move(imagePath);
 
     // Show the image on a QGraphicsView
-    QGraphicsScene *imageViewScene = new QGraphicsScene(this);
+    imageViewScene = new QGraphicsScene(this);
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
@@ -115,4 +116,13 @@ void MainWindow::on_actionSaveAs_triggered() {
         this->openedImage.save(imagePath);
         this->openedImagePath = imagePath;
     }
+}
+
+void MainWindow::on_actionInvertColor_triggered() {
+    qDebug() << "Before: " << openedImage.pixel(0, 0) << Qt::endl;
+    ImageProcessorWrapper::invertColor(openedImage);
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
+    qDebug() << "After: " << openedImage.pixel(0, 0) << Qt::endl;
 }

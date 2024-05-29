@@ -76,8 +76,15 @@
     </widget>
     <addaction name="menuScaling"/>
    </widget>
+   <widget class="QMenu" name="menuColor">
+    <property name="title">
+     <string>Колір</string>
+    </property>
+    <addaction name="actionInvertColor"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
+   <addaction name="menuColor"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
@@ -129,6 +136,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionInvertColor">
+   <property name="text">
+    <string>Інвертувати</string>
    </property>
   </action>
  </widget>
