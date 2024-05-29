@@ -49,6 +49,8 @@ class MainWindow : public QMainWindow {
 
     void on_actionInvertColor_triggered();
 
+    void on_actionRotate_triggered();
+
   private:
     Ui::MainWindow *ui;
 

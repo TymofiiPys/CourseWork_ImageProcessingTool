@@ -32,6 +32,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/invert.h
         src/imgproc/invert.cpp
         src/frontend/imageprocessorwrapper.h src/frontend/imageprocessorwrapper.cpp
+        src/frontend/rotatedialog.h src/frontend/rotatedialog.cpp src/frontend/rotatedialog.ui
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CourseWork_ImageProcessingTool APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -7,6 +7,7 @@
 
 #include "imageprocessorwrapper.h"
 #include "recentimages.h"
+#include "rotatedialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -124,4 +125,13 @@ void MainWindow::on_actionInvertColor_triggered() {
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
+}
+
+void MainWindow::on_actionRotate_triggered() {
+    RotateDialog dialog(this);
+    int value = 0;
+    if (dialog.exec() == QDialog::Accepted) {
+        value = dialog.getValue();
+    }
+    qDebug() << value;
 }

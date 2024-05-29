@@ -82,9 +82,16 @@
     </property>
     <addaction name="actionInvertColor"/>
    </widget>
+   <widget class="QMenu" name="menuTransform">
+    <property name="title">
+     <string>Трансформація</string>
+    </property>
+    <addaction name="actionRotate"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuColor"/>
+   <addaction name="menuTransform"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
@@ -141,6 +148,11 @@
   <action name="actionInvertColor">
    <property name="text">
     <string>Інвертувати</string>
+   </property>
+  </action>
+  <action name="actionRotate">
+   <property name="text">
+    <string>Поворот</string>
    </property>
   </action>
  </widget>
