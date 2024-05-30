@@ -21,7 +21,7 @@ Eigen::MatrixX<RGBTuple> ImageProcessorWrapper::rgbImageToMatrix(const QImage &f
         }
         return ret;
     }
-    return Eigen::Matrix<std::tuple<uint>, 1, 1>();
+    return Eigen::Matrix<RGBTuple, 1, 1>();
 }
 
 std::vector<std::vector<uint>> ImageProcessorWrapper::imageToVector(const QImage &from) {

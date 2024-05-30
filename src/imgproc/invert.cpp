@@ -31,36 +31,31 @@ void invert_color(std::vector<std::vector<unsigned int>> &image) {
     }
 }
 
-void invert_rgb_color_singlethreaded(std::vector<std::vector<std::vector<unsigned int>>> &rgb_image,
-                                     const int &start,
-                                     const int &end) {
+void invert_rgb_color_singlethreaded(RGBMatrix &rgb_image, const int &start, const int &end) {
     for (int i = start; i < end; i++) {
-        auto &row = rgb_image.at(i);
-        for (auto &cell : row) {
-            cell.at(0) = 255 - cell.at(0);
-            cell.at(1) = 255 - cell.at(1);
-            cell.at(2) = 255 - cell.at(2);
+        for (int j = 0; j < rgb_image.cols(); j++) {
+            unsigned int &r = std::get<0>(rgb_image(i, j));
+            unsigned int &g = std::get<1>(rgb_image(i, j));
+            unsigned int &b = std::get<2>(rgb_image(i, j));
+            r = 255 - r;
+            g = 255 - g;
+            b = 255 - b;
         }
     }
 }
 
-void invert_color_rgb(std::vector<std::vector<std::vector<unsigned int>>> &rgb_image) {
+void invert_color_rgb(RGBMatrix &rgb_image) {
     unsigned int nthreads = IPTConfigManager::getInstance().getThreads();
-    int rows_per_thread = rgb_image.size() / nthreads;
+    int rows_per_thread = rgb_image.rows() / nthreads;
     std::thread *threads = new std::thread[nthreads];
     for (int i = 0; i < nthreads; ++i) {
-        // auto portionBegin = rgb_image.begin() + i * rows_per_thread;
-        // auto portionEnd = (i < nthreads - 1) ? rgb_image.begin() + (i + 1) * rows_per_thread
-        //                                      : rgb_image.end();
-        // std::vector<std::vector<std::vector<unsigned int>>> imagePortion(portionBegin, portionEnd);
         int start = i * rows_per_thread;
-        int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : rgb_image.size();
+        int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : rgb_image.rows();
         threads[i] = std::thread(invert_rgb_color_singlethreaded, std::ref(rgb_image), start, end);
     }
     for (int i = 0; i < nthreads; ++i) {
         threads[i].join();
     }
-    // invert_rgb_color_singlethreaded(rgb_image);
 }
 
 } // namespace Color
