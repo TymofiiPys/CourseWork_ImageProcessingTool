@@ -18,11 +18,11 @@ class RotateDialog : public QDialog {
     void on_buttonBox_accepted();
 
   public:
-    int getValue() const;
+    double getValue() const;
 
   private:
     Ui::RotateDialog *ui;
-    int value;
+    double value;
 };
 
 #endif // ROTATEDIALOG_H

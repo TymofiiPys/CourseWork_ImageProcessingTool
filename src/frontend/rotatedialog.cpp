@@ -18,9 +18,9 @@ RotateDialog::~RotateDialog() {
 }
 
 void RotateDialog::on_buttonBox_accepted() {
-    this->value = this->ui->degreeLE->text().toInt();
+    this->value = this->ui->degreeLE->text().replace(",", ".").toDouble();
 }
 
-int RotateDialog::getValue() const {
+double RotateDialog::getValue() const {
     return this->value;
 }
