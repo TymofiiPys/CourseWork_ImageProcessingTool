@@ -15,6 +15,7 @@ class ImageProcessorWrapper {
 
   public:
     static void invertColor(QImage &);
+    static QImage rotateImage(QImage &, double &angle);
 };
 
 #endif // IMAGEPROCESSORWRAPPER_H
