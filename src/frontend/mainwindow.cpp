@@ -166,3 +166,10 @@ void MainWindow::on_actionToGray_triggered() {
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
 }
+
+void MainWindow::on_actionHistEq_triggered() {
+    ImageProcessorWrapper::histEq(openedImage);
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
+}

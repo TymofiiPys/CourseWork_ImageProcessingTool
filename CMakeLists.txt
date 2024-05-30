@@ -41,6 +41,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/aliases.h
         src/imgproc/togray.h
         src/imgproc/togray.cpp
+        src/imgproc/histeq.h
+        src/imgproc/histeq.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

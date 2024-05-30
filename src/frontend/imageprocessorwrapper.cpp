@@ -3,6 +3,7 @@
 #include <QColor>
 #include <QDebug>
 
+#include "../imgproc/histeq.h"
 #include "../imgproc/invert.h"
 #include "../imgproc/mirror.h"
 #include "../imgproc/rotate.h"
@@ -98,5 +99,11 @@ QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
 void ImageProcessorWrapper::toGray(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     ImgProc::Color::to_gray(imageV);
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::histEq(QImage &img) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::hist_eq(imageV);
     matrixToRgbImage(img, imageV);
 }

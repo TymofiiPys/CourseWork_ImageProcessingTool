@@ -82,6 +82,7 @@
     </property>
     <addaction name="actionInvertColor"/>
     <addaction name="actionToGray"/>
+    <addaction name="actionHistEq"/>
    </widget>
    <widget class="QMenu" name="menuTransform">
     <property name="title">
@@ -172,6 +173,11 @@
   <action name="actionToGray">
    <property name="text">
     <string>У відтінки сірого</string>
+   </property>
+  </action>
+  <action name="actionHistEq">
+   <property name="text">
+    <string>Еквалізація гістограми</string>
    </property>
   </action>
  </widget>

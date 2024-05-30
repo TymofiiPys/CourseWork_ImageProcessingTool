@@ -57,6 +57,8 @@ class MainWindow : public QMainWindow {
 
     void on_actionToGray_triggered();
 
+    void on_actionHistEq_triggered();
+
   private:
     Ui::MainWindow *ui;
 
