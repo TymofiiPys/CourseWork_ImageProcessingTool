@@ -1,20 +1,18 @@
 #ifndef MIRROR_H
 #define MIRROR_H
 
-#include <vector>
+#include "aliases.h"
 
 namespace ImgProc {
 
-inline namespace Color {
+inline namespace Transform {
 
-void mirror_singlethreaded(std::vector<std::vector<std::vector<unsigned int>>> &rgb_image,
-                           const int &start,
-                           const int &end,
-                           bool dir);
+void mirror_hor_singlethreaded(RGBMatrix &rgb_image, const int &start, const int &end);
+void mirror_ver_singlethreaded(RGBMatrix &rgb_image, const int &start, const int &end);
 
-void mirror(std::vector<std::vector<std::vector<unsigned int>>> &rgb_image);
+void mirror(RGBMatrix &rgb_image, const bool &dir);
 
-} // namespace Color
+} // namespace Transform
 
 } // namespace ImgProc
 

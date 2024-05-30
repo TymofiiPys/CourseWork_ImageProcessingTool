@@ -145,3 +145,17 @@ void MainWindow::on_actionRotate_triggered() {
     }
     qDebug() << value;
 }
+
+void MainWindow::on_actionMirHor_triggered() {
+    ImageProcessorWrapper::mirror(openedImage, true);
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
+}
+
+void MainWindow::on_actionMirVer_triggered() {
+    ImageProcessorWrapper::mirror(openedImage, false);
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
+}

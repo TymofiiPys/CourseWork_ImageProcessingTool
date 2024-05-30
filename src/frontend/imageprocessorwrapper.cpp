@@ -4,6 +4,7 @@
 #include <QDebug>
 
 #include "../imgproc/invert.h"
+#include "../imgproc/mirror.h"
 #include "../imgproc/rotate.h"
 
 Eigen::MatrixX<RGBTuple> ImageProcessorWrapper::rgbImageToMatrix(const QImage &from) {
@@ -15,8 +16,8 @@ Eigen::MatrixX<RGBTuple> ImageProcessorWrapper::rgbImageToMatrix(const QImage &f
             for (int x = 0; x < from.width(); ++x) {
                 const QColor pixel = QColor(line[x]);
                 ret(y, x) = std::make_tuple(static_cast<uint>(pixel.red()),
-                                            static_cast<uint>(pixel.blue()),
-                                            static_cast<uint>(pixel.green()));
+                                            static_cast<uint>(pixel.green()),
+                                            static_cast<uint>(pixel.blue()));
             }
         }
         return ret;
@@ -60,7 +61,7 @@ void ImageProcessorWrapper::matrixToRgbImage(QImage &dest, const Eigen::MatrixX<
             QRgb *line = reinterpret_cast<QRgb *>(dest.scanLine(y));
             for (int x = 0; x < src.cols(); ++x) {
                 RGBTuple pixel = src(y, x);
-                line[x] = qRgb(std::get<0>(pixel), std::get<1>(pixel), std::get<2>(pixel));
+                line[x] = qRgba(std::get<0>(pixel), std::get<1>(pixel), std::get<2>(pixel), 255);
             }
         }
     }
@@ -71,6 +72,12 @@ void ImageProcessorWrapper::invertColor(QImage &img) {
     ImgProc::Color::invert_color_rgb(imageV);
     // std::vector<std::vector<std::vector<uint>>> imageV = {{{0u, 0u, 0u}, {255u, 255u, 255u}},
     //                                                       {{255u, 255u, 255u}, {128u, 128u, 128u}}};
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::mirror(QImage &img, const bool horizontal = true) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Transform::mirror(imageV, horizontal);
     matrixToRgbImage(img, imageV);
 }
 

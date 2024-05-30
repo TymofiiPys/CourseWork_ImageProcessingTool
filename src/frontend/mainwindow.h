@@ -51,6 +51,10 @@ class MainWindow : public QMainWindow {
 
     void on_actionRotate_triggered();
 
+    void on_actionMirHor_triggered();
+
+    void on_actionMirVer_triggered();
+
   private:
     Ui::MainWindow *ui;
 

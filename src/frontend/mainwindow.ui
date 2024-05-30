@@ -87,6 +87,9 @@
      <string>Трансформація</string>
     </property>
     <addaction name="actionRotate"/>
+    <addaction name="separator"/>
+    <addaction name="actionMirHor"/>
+    <addaction name="actionMirVer"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -153,6 +156,16 @@
   <action name="actionRotate">
    <property name="text">
     <string>Поворот</string>
+   </property>
+  </action>
+  <action name="actionMirHor">
+   <property name="text">
+    <string>Відобразити по горизонталі</string>
+   </property>
+  </action>
+  <action name="actionMirVer">
+   <property name="text">
+    <string>Відобразити по вертикалі</string>
    </property>
   </action>
  </widget>

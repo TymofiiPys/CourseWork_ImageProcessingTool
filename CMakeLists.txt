@@ -38,6 +38,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/rotate.cpp
         src/imgproc/mirror.h
         src/imgproc/mirror.cpp
+        src/imgproc/aliases.h
 
     )
 # Define target properties for Android with Qt 6 as:

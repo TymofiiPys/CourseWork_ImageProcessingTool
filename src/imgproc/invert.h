@@ -3,13 +3,9 @@
 
 #include <vector>
 
-#include <Eigen/Dense>
+#include "aliases.h"
 
 namespace ImgProc {
-
-using RGBTuple = std::tuple<unsigned int, unsigned int, unsigned int>;
-
-using RGBMatrix = Eigen::MatrixX<RGBTuple>;
 
 inline namespace Color {
 
