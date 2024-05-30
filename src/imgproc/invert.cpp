@@ -1,8 +1,9 @@
+#include "invert.h"
+
 #include <functional>
 #include <thread>
 
 #include "../config/iptconfigmanager.h"
-#include "invert.h"
 
 namespace ImgProc {
 

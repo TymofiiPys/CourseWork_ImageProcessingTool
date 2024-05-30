@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Eigen3 3.3 REQUIRED)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -33,6 +34,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/invert.cpp
         src/frontend/imageprocessorwrapper.h src/frontend/imageprocessorwrapper.cpp
         src/frontend/rotatedialog.h src/frontend/rotatedialog.cpp src/frontend/rotatedialog.ui
+        src/imgproc/rotate.h
+        src/imgproc/rotate.cpp
 
     )
 # Define target properties for Android with Qt 6 as:
@@ -53,7 +56,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(CourseWork_ImageProcessingTool PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(CourseWork_ImageProcessingTool PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Eigen3::Eigen)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
