@@ -36,6 +36,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/frontend/rotatedialog.h src/frontend/rotatedialog.cpp src/frontend/rotatedialog.ui
         src/imgproc/rotate.h
         src/imgproc/rotate.cpp
+        src/imgproc/mirror.h
+        src/imgproc/mirror.cpp
 
     )
 # Define target properties for Android with Qt 6 as:
