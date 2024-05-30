@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include <cmath>
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QString>
@@ -54,7 +56,7 @@ void MainWindow::getRecentImagesToMenu() {
 void MainWindow::openImage(const QString &imagePath) {
     // Open image and save the filename to recents file
     this->openedImage.load(imagePath);
-    this->openedImage.convertTo(QImage::Format_ARGB32);
+    this->openedImage.convertTo(QImage::Format_Grayscale8);
     savePathToFile(imagePath);
     this->openedImagePath = std::move(imagePath);
 
@@ -129,9 +131,17 @@ void MainWindow::on_actionInvertColor_triggered() {
 
 void MainWindow::on_actionRotate_triggered() {
     RotateDialog dialog(this);
-    int value = 0;
+    double value = 0;
     if (dialog.exec() == QDialog::Accepted) {
         value = dialog.getValue();
+        value = std::fmod(value, 360);
+        if (value < 0)
+            value += 360;
+        QImage neww = ImageProcessorWrapper::rotateImage(openedImage, value);
+        this->openedImage = neww;
+        imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+        imageViewScene->setSceneRect(this->openedImage.rect());
+        ui->imageView->setScene(imageViewScene);
     }
     qDebug() << value;
 }
