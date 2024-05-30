@@ -32,10 +32,10 @@ std::vector<std::vector<uint>> ImageProcessorWrapper::imageToVector(const QImage
         std::vector<std::vector<uint>> ret;
         for (int y = 0; y < from.height(); y++) {
             ret.push_back(std::vector<uint>());
-            const QRgb *line = reinterpret_cast<const QRgb *>(from.scanLine(y));
+            const uchar *line = from.scanLine(y);
 
             for (int x = 0; x < from.width(); ++x) {
-                ret.at(y).push_back(qGray(line[x]));
+                ret.at(y).push_back(static_cast<uint>(line[x]));
             }
         }
         return ret;
@@ -80,14 +80,14 @@ void ImageProcessorWrapper::invertColor(QImage &img) {
 }
 
 QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
-    // std::vector<std::vector<std::vector<uint>>> imageV = rgbImageToVector(img);
-    // ImgProc::Transform::rotate_img(imageV, angle);
-    // QImage rotated(imageV[0].size(), imageV.size(), img.format());
-    // vectorToRgbImage(rotated, imageV);
-    // return rotated;
-    std::vector<std::vector<uint>> imageV = imageToVector(img);
-    ImgProc::Transform::rotate_img_gray(imageV, angle);
-    QImage rotated(imageV[0].size(), imageV.size(), QImage::Format_ARGB32);
-    vectorToImage(rotated, imageV);
+    std::vector<std::vector<std::vector<uint>>> imageV = rgbImageToVector(img);
+    ImgProc::Transform::rotate_img(imageV, angle);
+    QImage rotated(imageV[0].size(), imageV.size(), img.format());
+    vectorToRgbImage(rotated, imageV);
     return rotated;
+    // std::vector<std::vector<uint>> imageV = imageToVector(img);
+    // ImgProc::Transform::rotate_img_gray(imageV, angle);
+    // QImage rotated(imageV[0].size(), imageV.size(), QImage::Format_ARGB32);
+    // vectorToImage(rotated, imageV);
+    // return rotated;
 }

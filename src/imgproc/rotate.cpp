@@ -105,8 +105,10 @@ void ImgProc::rotate_img_singlethreaded(
     const int &start,
     const int &end) {
     // Get image dimensions
-    const int rows = rotated_image.size();
-    const int cols = rotated_image[0].size();
+    const int newRows = rotated_image.size();
+    const int newCols = rotated_image[0].size();
+    const int rows = image.size();
+    const int cols = image[0].size();
     // const int newWidth = rotated_image[0].size();
 
     // Compute center of rotation
@@ -115,7 +117,7 @@ void ImgProc::rotate_img_singlethreaded(
 
     // Iterate over the rows assigned to this thread
     for (int x = start; x < end; ++x) {
-        for (int y = 0; y < cols; ++y) {
+        for (int y = 0; y < newCols; ++y) {
             // Map current pixel back to original image coordinates
             Eigen::Vector3d target(x - centerX, y - centerY, 1);
             Eigen::Vector3d source = transform_inverse * target;
@@ -123,21 +125,21 @@ void ImgProc::rotate_img_singlethreaded(
             double originalY = source(1) + centerY;
 
             if (originalX >= 0 && originalX < rows && originalY >= 0 && originalY < cols) {
-                // int x1 = std::floor(originalX);
-                // int x2 = std::ceil(originalX);
-                // int y1 = std::floor(originalY);
-                // int y2 = std::ceil(originalY);
+                int x1 = std::floor(originalX);
+                int x2 = std::ceil(originalX);
+                int y1 = std::floor(originalY);
+                int y2 = std::ceil(originalY);
 
-                // double dx = originalX - x1;
-                // double dy = originalY - y1;
+                double dx = originalX - x1;
+                double dy = originalY - y1;
 
                 for (int c = 0; c < 3; ++c) {
-                    // double interpolatedValue = (1 - dx) * (1 - dy) * image[x1][y1][c]
-                    //                            + dx * (1 - dy) * image[x2][y1][c]
-                    //                            + (1 - dx) * dy * image[x1][y2][c]
-                    //                            + dx * dy * image[x2][y2][c];
-                    // rotated_image[x][y][c] = round(interpolatedValue);
-                    rotated_image[x][y][c] = bicubicInterpolate(image, originalX, originalY, c);
+                    double interpolatedValue = (1 - dx) * (1 - dy) * image[x1][y1][c]
+                                               + dx * (1 - dy) * image[x2][y1][c]
+                                               + (1 - dx) * dy * image[x1][y2][c]
+                                               + dx * dy * image[x2][y2][c];
+                    rotated_image[x][y][c] = round(interpolatedValue);
+                    // rotated_image[x][y][c] = bicubicInterpolate(image, originalX, originalY, c);
                 }
             }
         }
@@ -160,18 +162,18 @@ void ImgProc::Transform::rotate_img(std::vector<std::vector<std::vector<unsigned
     double cosTheta = std::cos(rads);
     if (cosTheta < 0.000000001)
         cosTheta = 0;
-    // const int newWidth = std::ceil(std::abs(width * cosTheta) + std::abs(height * sinTheta));
-    // const int newHeight = std::ceil(std::abs(width * sinTheta) + std::abs(height * cosTheta));
+    const int newWidth = std::ceil(std::abs(width * cosTheta) + std::abs(height * sinTheta));
+    const int newHeight = std::ceil(std::abs(width * sinTheta) + std::abs(height * cosTheta));
 
     const int centerX = width / 2.0;
     const int centerY = height / 2.0;
 
-    // std::vector<std::vector<std::vector<unsigned int>>>
-    //     rotated_img(newHeight,
-    //                 std::vector<std::vector<unsigned int>>(newWidth, std::vector<unsigned int>(3)));
     std::vector<std::vector<std::vector<unsigned int>>>
-        rotated_img(height,
-                    std::vector<std::vector<unsigned int>>(width, std::vector<unsigned int>(3)));
+        rotated_img(newHeight,
+                    std::vector<std::vector<unsigned int>>(newWidth, std::vector<unsigned int>(3)));
+    // std::vector<std::vector<std::vector<unsigned int>>>
+    //     rotated_img(height,
+    //                 std::vector<std::vector<unsigned int>>(width, std::vector<unsigned int>(3)));
 
     Eigen::Matrix3d rotation_matrix;
     rotation_matrix << cosTheta, -sinTheta, 0, sinTheta, cosTheta, 0, 0, 0, 1;
