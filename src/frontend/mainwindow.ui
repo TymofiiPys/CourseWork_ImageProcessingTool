@@ -81,6 +81,7 @@
      <string>Колір</string>
     </property>
     <addaction name="actionInvertColor"/>
+    <addaction name="actionToGray"/>
    </widget>
    <widget class="QMenu" name="menuTransform">
     <property name="title">
@@ -166,6 +167,11 @@
   <action name="actionMirVer">
    <property name="text">
     <string>Відобразити по вертикалі</string>
+   </property>
+  </action>
+  <action name="actionToGray">
+   <property name="text">
+    <string>У відтінки сірого</string>
    </property>
   </action>
  </widget>

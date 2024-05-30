@@ -46,7 +46,7 @@ void invert_rgb_color_singlethreaded(RGBMatrix &rgb_image, const int &start, con
 
 void invert_color_rgb(RGBMatrix &rgb_image) {
     unsigned int nthreads = IPTConfigManager::getInstance().getThreads();
-    int rows_per_thread = rgb_image.rows() / nthreads;
+    const int rows_per_thread = rgb_image.rows() / nthreads;
     std::thread *threads = new std::thread[nthreads];
     for (int i = 0; i < nthreads; ++i) {
         int start = i * rows_per_thread;

@@ -159,3 +159,10 @@ void MainWindow::on_actionMirVer_triggered() {
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
 }
+
+void MainWindow::on_actionToGray_triggered() {
+    ImageProcessorWrapper::toGray(openedImage);
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
+}

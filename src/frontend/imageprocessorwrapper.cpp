@@ -6,6 +6,7 @@
 #include "../imgproc/invert.h"
 #include "../imgproc/mirror.h"
 #include "../imgproc/rotate.h"
+#include "../imgproc/togray.h"
 
 Eigen::MatrixX<RGBTuple> ImageProcessorWrapper::rgbImageToMatrix(const QImage &from) {
     if (!from.isGrayscale()) {
@@ -92,4 +93,10 @@ QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
     // QImage rotated(imageV[0].size(), imageV.size(), QImage::Format_ARGB32);
     // vectorToImage(rotated, imageV);
     // return rotated;
+}
+
+void ImageProcessorWrapper::toGray(QImage &img) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::to_gray(imageV);
+    matrixToRgbImage(img, imageV);
 }

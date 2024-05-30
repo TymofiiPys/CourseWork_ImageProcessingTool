@@ -55,6 +55,8 @@ class MainWindow : public QMainWindow {
 
     void on_actionMirVer_triggered();
 
+    void on_actionToGray_triggered();
+
   private:
     Ui::MainWindow *ui;
 
