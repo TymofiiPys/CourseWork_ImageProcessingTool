@@ -59,6 +59,10 @@ class MainWindow : public QMainWindow {
 
     void on_actionHistEq_triggered();
 
+    void on_actionLogTransform_triggered();
+
+    void on_actionWeightAver_triggered();
+
   private:
     Ui::MainWindow *ui;
 

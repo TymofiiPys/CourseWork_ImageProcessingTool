@@ -3,8 +3,10 @@
 #include <QColor>
 #include <QDebug>
 
+#include "../imgproc/averaging.h"
 #include "../imgproc/histeq.h"
 #include "../imgproc/invert.h"
+#include "../imgproc/logtransform.h"
 #include "../imgproc/mirror.h"
 #include "../imgproc/rotate.h"
 #include "../imgproc/togray.h"
@@ -105,5 +107,18 @@ void ImageProcessorWrapper::toGray(QImage &img) {
 void ImageProcessorWrapper::histEq(QImage &img, const bool red, const bool green, const bool blue) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     ImgProc::Color::hist_eq(imageV, red, green, blue);
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::logTransform(
+    QImage &img, const double c, const bool red, const bool green, const bool blue) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::log_transform(imageV, c, red, green, blue);
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::weightedAverage(QImage &img) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Filter::weighted_averaging(imageV);
     matrixToRgbImage(img, imageV);
 }

@@ -83,6 +83,7 @@
     <addaction name="actionInvertColor"/>
     <addaction name="actionToGray"/>
     <addaction name="actionHistEq"/>
+    <addaction name="actionLogTransform"/>
    </widget>
    <widget class="QMenu" name="menuTransform">
     <property name="title">
@@ -93,10 +94,17 @@
     <addaction name="actionMirHor"/>
     <addaction name="actionMirVer"/>
    </widget>
+   <widget class="QMenu" name="menuFilter">
+    <property name="title">
+     <string>Фільтр</string>
+    </property>
+    <addaction name="actionWeightAver"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuColor"/>
    <addaction name="menuTransform"/>
+   <addaction name="menuFilter"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
@@ -178,6 +186,16 @@
   <action name="actionHistEq">
    <property name="text">
     <string>Еквалізація гістограми</string>
+   </property>
+  </action>
+  <action name="actionLogTransform">
+   <property name="text">
+    <string>Логарифмічне перетворення</string>
+   </property>
+  </action>
+  <action name="actionWeightAver">
+   <property name="text">
+    <string>Середнє</string>
    </property>
   </action>
  </widget>

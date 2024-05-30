@@ -21,6 +21,9 @@ class ImageProcessorWrapper {
     static QImage rotateImage(QImage &, double &angle);
     static void toGray(QImage &);
     static void histEq(QImage &, const bool red, const bool green, const bool blue);
+    static void logTransform(
+        QImage &, const double c, const bool red, const bool green, const bool blue);
+    static void weightedAverage(QImage &);
 };
 
 #endif // IMAGEPROCESSORWRAPPER_H

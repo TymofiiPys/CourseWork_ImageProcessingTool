@@ -44,6 +44,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/histeq.h
         src/imgproc/histeq.cpp
         src/frontend/choosechanneldialog.h src/frontend/choosechanneldialog.cpp src/frontend/choosechanneldialog.ui
+        src/imgproc/logtransform.h
+        src/imgproc/logtransform.cpp
+        src/frontend/ltdialog.h src/frontend/ltdialog.cpp src/frontend/ltdialog.ui
+        src/imgproc/averaging.h
+        src/imgproc/averaging.cpp
+
 
     )
 # Define target properties for Android with Qt 6 as:

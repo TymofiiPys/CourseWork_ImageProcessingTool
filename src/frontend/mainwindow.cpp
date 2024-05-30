@@ -9,6 +9,7 @@
 
 #include "choosechanneldialog.h"
 #include "imageprocessorwrapper.h"
+#include "ltdialog.h"
 #include "recentimages.h"
 #include "rotatedialog.h"
 
@@ -179,4 +180,25 @@ void MainWindow::on_actionHistEq_triggered() {
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);
     }
+}
+
+void MainWindow::on_actionLogTransform_triggered() {
+    LTDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        const bool &red = dialog.getRed();
+        const bool &green = dialog.getGreen();
+        const bool &blue = dialog.getBlue();
+        const double &c = dialog.getC();
+        ImageProcessorWrapper::logTransform(openedImage, c, red, green, blue);
+        imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+        imageViewScene->setSceneRect(this->openedImage.rect());
+        ui->imageView->setScene(imageViewScene);
+    }
+}
+
+void MainWindow::on_actionWeightAver_triggered() {
+    ImageProcessorWrapper::weightedAverage(openedImage);
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
 }
