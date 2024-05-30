@@ -102,8 +102,8 @@ void ImageProcessorWrapper::toGray(QImage &img) {
     matrixToRgbImage(img, imageV);
 }
 
-void ImageProcessorWrapper::histEq(QImage &img) {
+void ImageProcessorWrapper::histEq(QImage &img, const bool red, const bool green, const bool blue) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
-    ImgProc::Color::hist_eq(imageV);
+    ImgProc::Color::hist_eq(imageV, red, green, blue);
     matrixToRgbImage(img, imageV);
 }

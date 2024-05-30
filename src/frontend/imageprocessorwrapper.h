@@ -20,7 +20,7 @@ class ImageProcessorWrapper {
     static void mirror(QImage &, const bool horizontal);
     static QImage rotateImage(QImage &, double &angle);
     static void toGray(QImage &);
-    static void histEq(QImage &);
+    static void histEq(QImage &, const bool red, const bool green, const bool blue);
 };
 
 #endif // IMAGEPROCESSORWRAPPER_H

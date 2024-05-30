@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QString>
 
+#include "choosechanneldialog.h"
 #include "imageprocessorwrapper.h"
 #include "recentimages.h"
 #include "rotatedialog.h"
@@ -168,8 +169,14 @@ void MainWindow::on_actionToGray_triggered() {
 }
 
 void MainWindow::on_actionHistEq_triggered() {
-    ImageProcessorWrapper::histEq(openedImage);
-    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
-    imageViewScene->setSceneRect(this->openedImage.rect());
-    ui->imageView->setScene(imageViewScene);
+    ChooseChannelDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        const bool &red = dialog.getRed();
+        const bool &green = dialog.getGreen();
+        const bool &blue = dialog.getBlue();
+        ImageProcessorWrapper::histEq(openedImage, red, green, blue);
+        imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+        imageViewScene->setSceneRect(this->openedImage.rect());
+        ui->imageView->setScene(imageViewScene);
+    }
 }

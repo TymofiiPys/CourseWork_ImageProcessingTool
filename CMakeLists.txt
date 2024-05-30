@@ -43,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/togray.cpp
         src/imgproc/histeq.h
         src/imgproc/histeq.cpp
+        src/frontend/choosechanneldialog.h src/frontend/choosechanneldialog.cpp src/frontend/choosechanneldialog.ui
 
     )
 # Define target properties for Android with Qt 6 as:
