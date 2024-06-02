@@ -4,9 +4,10 @@
 #include <QDebug>
 
 #include "../imgproc/averaging.h"
+#include "../imgproc/exp_transform.h"
 #include "../imgproc/histeq.h"
 #include "../imgproc/invert.h"
-#include "../imgproc/logtransform.h"
+#include "../imgproc/log_transform.h"
 #include "../imgproc/mirror.h"
 #include "../imgproc/rotate.h"
 #include "../imgproc/togray.h"
@@ -114,6 +115,13 @@ void ImageProcessorWrapper::logTransform(
     QImage &img, const double c, const bool red, const bool green, const bool blue) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     ImgProc::Color::log_transform(imageV, c, red, green, blue);
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::expTransform(
+    QImage &img, const double c, const bool red, const bool green, const bool blue) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::exp_transform(imageV, c, red, green, blue);
     matrixToRgbImage(img, imageV);
 }
 

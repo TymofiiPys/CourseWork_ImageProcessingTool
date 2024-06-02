@@ -63,6 +63,8 @@ class MainWindow : public QMainWindow {
 
     void on_actionWeightAver_triggered();
 
+    void on_actionExpTransform_triggered();
+
   private:
     Ui::MainWindow *ui;
 

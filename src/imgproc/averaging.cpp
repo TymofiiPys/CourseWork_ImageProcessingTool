@@ -1,22 +1,5 @@
 #include "averaging.h"
 
-#include <optional>
-
-// const Eigen::Matrix3d area(const ImgProc::RGBMatrix &img, const int &x, const int &y) {
-//     Eigen::Matrix3<std::optional<unsigned int>> ret;
-//     for (int i = -1; i < 2; ++i) {
-//         if (x + i >= img.rows() || x + i < 0) {
-//             ret(i + 1) = {};
-//             continue;
-//         }
-//         for (int j = -1; j < 2; ++j) {
-//             if (y + j >= img.cols() || y + j < 0)
-//                 continue;
-//         }
-//     }
-//     return ret;
-// }
-
 void ImgProc::weighted_averaging(RGBMatrix &img) {
     RGBMatrix newimg(img.rows(), img.cols());
     int halfW = matrix.rows() / 2;

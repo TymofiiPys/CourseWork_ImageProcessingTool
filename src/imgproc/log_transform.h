@@ -1,5 +1,5 @@
-#ifndef LOGTRANSFORM_H
-#define LOGTRANSFORM_H
+#ifndef LOG_TRANSFORM_H
+#define LOG_TRANSFORM_H
 
 #include "aliases.h"
 
@@ -22,4 +22,4 @@ void log_transform(
 
 } // namespace ImgProc
 
-#endif // LOGTRANSFORM_H
+#endif // LOG_TRANSFORM_H

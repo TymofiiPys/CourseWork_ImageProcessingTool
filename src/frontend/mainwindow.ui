@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Редактор зображень</string>
+   <string>Додаток для обробки цифрових зображень</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -84,6 +84,7 @@
     <addaction name="actionToGray"/>
     <addaction name="actionHistEq"/>
     <addaction name="actionLogTransform"/>
+    <addaction name="actionExpTransform"/>
    </widget>
    <widget class="QMenu" name="menuTransform">
     <property name="title">
@@ -196,6 +197,11 @@
   <action name="actionWeightAver">
    <property name="text">
     <string>Середнє</string>
+   </property>
+  </action>
+  <action name="actionExpTransform">
+   <property name="text">
+    <string>Експоненційне перетворення</string>
    </property>
   </action>
  </widget>

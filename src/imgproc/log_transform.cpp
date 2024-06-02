@@ -1,4 +1,4 @@
-#include "logtransform.h"
+#include "log_transform.h"
 
 #include <cmath>
 

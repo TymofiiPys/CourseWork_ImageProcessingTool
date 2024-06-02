@@ -23,6 +23,8 @@ class ImageProcessorWrapper {
     static void histEq(QImage &, const bool red, const bool green, const bool blue);
     static void logTransform(
         QImage &, const double c, const bool red, const bool green, const bool blue);
+    static void expTransform(
+        QImage &, const double c, const bool red, const bool green, const bool blue);
     static void weightedAverage(QImage &);
 };
 
