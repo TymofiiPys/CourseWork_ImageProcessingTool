@@ -60,62 +60,65 @@ float bicubicInterpolate(const std::vector<std::vector<std::vector<unsigned int>
                       255.0f);
 }
 
-void ImgProc::rotate_img_singlethreaded(
-    const std::vector<std::vector<std::vector<unsigned int>>> &image,
-    std::vector<std::vector<std::vector<unsigned int>>> &rotated_image,
-    const Eigen::Matrix3d &transform_inverse,
-    const int &start,
-    const int &end) {
-    // Get image dimensions
-    const int newRows = rotated_image.size();
-    const int newCols = rotated_image[0].size();
-    const int rows = image.size();
-    const int cols = image[0].size();
-    // const int newWidth = rotated_image[0].size();
+void ImgProc::rotate_img_singlethreaded(const RGBMatrix &image,
+                                        RGBMatrix &rotated_image,
+                                        const Eigen::Matrix3d &rotation,
+                                        const Eigen::Matrix3d &translation_before,
+                                        const Eigen::Matrix3d &translation_after,
+                                        const int &start,
+                                        const int &end) {
+    const int newRows = rotated_image.rows();
+    const int newCols = rotated_image.cols();
+    const int rows = image.rows();
+    const int cols = image.cols();
 
-    // Compute center of rotation
     const double centerY = cols / 2.0;
-    const double centerX = (end + start) / 2.0;
+    const double centerX = rows / 2.0;
+    const double newCenterY = newCols / 2.0;
+    const double newCenterX = newRows / 2.0;
 
-    // Iterate over the rows assigned to this thread
     for (int x = start; x < end; ++x) {
-        for (int y = 0; y < newCols; ++y) {
-            // Map current pixel back to original image coordinates
-            Eigen::Vector3d target(x - centerX, y - centerY, 1);
-            Eigen::Vector3d source = transform_inverse * target;
-            double originalX = source(0) + centerX;
-            double originalY = source(1) + centerY;
+        qDebug() << "row " << x;
+        for (int y = 0; y < cols; ++y) {
+            Eigen::Vector3d oldCoords(x, y, 1);
+            Eigen::Vector3d newCoords = translation_after * rotation * translation_before
+                                        * oldCoords;
 
-            if (originalX >= 0 && originalX < rows && originalY >= 0 && originalY < cols) {
-                int x1 = std::floor(originalX);
-                int x2 = std::ceil(originalX);
-                int y1 = std::floor(originalY);
-                int y2 = std::ceil(originalY);
+            // int x1 = std::floor(newCoords(0));
+            // int x2 = std::ceil(newCoords(0));
+            // int y1 = std::floor(newCoords(1));
+            // int y2 = std::ceil(originalY);
 
-                double dx = originalX - x1;
-                double dy = originalY - y1;
-
-                for (int c = 0; c < 3; ++c) {
-                    double interpolatedValue = (1 - dx) * (1 - dy) * image[x1][y1][c]
-                                               + dx * (1 - dy) * image[x2][y1][c]
-                                               + (1 - dx) * dy * image[x1][y2][c]
-                                               + dx * dy * image[x2][y2][c];
-                    rotated_image[x][y][c] = round(interpolatedValue);
-                    // rotated_image[x][y][c] = bicubicInterpolate(image, originalX, originalY, c);
-                }
+            // double dx = originalX - x1;
+            // double dy = originalY - y1;
+            double interpolatedValue[3];
+            for (int c = 0; c < 3; ++c) {
+                // interpolatedValue[c] = (1 - dx) * (1 - dy) * image[x1][y1][c]
+                //                            + dx * (1 - dy) * image[x2][y1][c]
+                //                            + (1 - dx) * dy * image[x1][y2][c]
+                //                            + dx * dy * image[x2][y2][c];
+                // rotated_image(newCoords(0), newCoords(1)][c] = image[x][y][c];
+                // rotated_image[x][y][c] = bicubicInterpolate(image, originalX, originalY, c);
             }
+            std::get<0>(
+                rotated_image(static_cast<int>(newCoords(0)), static_cast<int>(newCoords(1))))
+                = std::get<0>(image(x, y));
+            std::get<1>(
+                rotated_image(static_cast<int>(newCoords(0)), static_cast<int>(newCoords(1))))
+                = std::get<1>(image(x, y));
+            std::get<2>(
+                rotated_image(static_cast<int>(newCoords(0)), static_cast<int>(newCoords(1))))
+                = std::get<2>(image(x, y));
+            qDebug() << "col " << y;
         }
-        if (x % 10 == 0)
-            qDebug() << "row " << x;
     }
 }
 
-void ImgProc::Transform::rotate_img(std::vector<std::vector<std::vector<unsigned int>>> &rgb_image,
-                                    double &angle) {
+void ImgProc::Transform::rotate_img(RGBMatrix &rgb_image, double &angle) {
     double rads = angle * M_PI / 180;
 
-    const int &height = rgb_image.size();
-    const int &width = rgb_image[0].size();
+    const int &height = rgb_image.rows();
+    const int &width = rgb_image.cols();
 
     // Compute transformed image dimensions
     double sinTheta = std::sin(rads);
@@ -129,13 +132,15 @@ void ImgProc::Transform::rotate_img(std::vector<std::vector<std::vector<unsigned
 
     const int centerX = width / 2.0;
     const int centerY = height / 2.0;
-    const int newCenterX = width / 2.0;
-    const int newCenterY = height / 2.0;
+    const int newCenterX = newWidth / 2.0;
+    const int newCenterY = newHeight / 2.0;
 
-    std::vector<std::vector<std::vector<unsigned int>>>
-        rotated_img(newHeight,
-                    std::vector<std::vector<unsigned int>>(newWidth, std::vector<unsigned int>(3)));
+    RGBMatrix rotated_img(newHeight, newWidth);
+
     // std::vector<std::vector<std::vector<unsigned int>>>
+    //     rotated_img(newHeight,
+    //                 std::vector<std::vector<unsigned int>>(newWidth, std::vector<unsigned int>(3)));
+    // // std::vector<std::vector<std::vector<unsigned int>>>
     //     rotated_img(height,
     //                 std::vector<std::vector<unsigned int>>(width, std::vector<unsigned int>(3)));
 
@@ -144,14 +149,14 @@ void ImgProc::Transform::rotate_img(std::vector<std::vector<std::vector<unsigned
     Eigen::Matrix3d translation_before;
     translation_before << 1, 0, -centerX, 0, 1, -centerY, 0, 0, 1;
     Eigen::Matrix3d translation_after;
-    translation_after << 1, 0, newCenterX, 0, 1, -newCenterY, 0, 0, 1;
+    translation_after << 1, 0, newCenterX, 0, 1, newCenterY, 0, 0, 1;
     rotate_img_singlethreaded(rgb_image,
                               rotated_img,
-                              rotation_matrix.inverse(),
+                              rotation_matrix,
                               translation_before,
                               translation_after,
                               0,
-                              rotated_img.size());
+                              rotated_img.rows());
 
     // unsigned int nthreads = IPTConfigManager::getInstance().getThreads();
     // int rows_per_thread = rotated_img.size() / nthreads;

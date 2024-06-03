@@ -87,11 +87,11 @@ void ImageProcessorWrapper::mirror(QImage &img, const bool horizontal = true) {
 }
 
 QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
-    // Eigen::MatrixX<RGBTuple> imageV = rgbImageToVector(img);
-    // ImgProc::Transform::rotate_img(imageV, angle);
-    // QImage rotated(imageV[0].size(), imageV.size(), img.format());
-    // vectorToRgbImage(rotated, imageV);
-    // return rotated;
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Transform::rotate_img(imageV, angle);
+    QImage rotated(imageV.cols(), imageV.rows(), img.format());
+    matrixToRgbImage(rotated, imageV);
+    return rotated;
     // std::vector<std::vector<uint>> imageV = imageToVector(img);
     // ImgProc::Transform::rotate_img_gray(imageV, angle);
     // QImage rotated(imageV[0].size(), imageV.size(), QImage::Format_ARGB32);
