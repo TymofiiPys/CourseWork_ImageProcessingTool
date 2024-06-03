@@ -13,7 +13,7 @@ void scale_img_singlethreaded(const RGBMatrix &image,
                               const int start,
                               const int end);
 
-RGBMatrix scale_img(RGBMatrix &image, const double &sX, const double &sY);
+RGBMatrix scale_img(const RGBMatrix &image, const double &sX, const double &sY);
 
 } // namespace Transform
 

@@ -46,16 +46,24 @@ void ImgProc::Transform::scale_img_singlethreaded(const RGBMatrix &image,
                 std::get<0>(scaled_image(x, y)) = std::round(interpolatedValue[0]);
                 std::get<1>(scaled_image(x, y)) = std::round(interpolatedValue[1]);
                 std::get<2>(scaled_image(x, y)) = std::round(interpolatedValue[2]);
+            } else if ((oldCoords(0) == rows - 1 || oldCoords(1) == cols - 1) && oldCoords(0) >= 0
+                       && oldCoords(1) >= 0) {
+                std::get<0>(scaled_image(x, y)) = std::get<0>(
+                    image((int) oldCoords(0), (int) oldCoords(1)));
+                std::get<1>(scaled_image(x, y)) = std::get<1>(
+                    image((int) oldCoords(0), (int) oldCoords(1)));
+                std::get<2>(scaled_image(x, y)) = std::get<2>(
+                    image((int) oldCoords(0), (int) oldCoords(1)));
             } else {
-                std::get<0>(scaled_image(x, y)) = 0;
-                std::get<1>(scaled_image(x, y)) = 0;
-                std::get<2>(scaled_image(x, y)) = 0;
+                std::get<0>(scaled_image(x, y)) = 0u;
+                std::get<1>(scaled_image(x, y)) = 0u;
+                std::get<2>(scaled_image(x, y)) = 0u;
             }
         }
     }
 }
 
-ImgProc::RGBMatrix ImgProc::Transform::scale_img(RGBMatrix &image,
+ImgProc::RGBMatrix ImgProc::Transform::scale_img(const RGBMatrix &image,
                                                  const double &sX,
                                                  const double &sY) {
     const int height = image.rows();
@@ -76,21 +84,21 @@ ImgProc::RGBMatrix ImgProc::Transform::scale_img(RGBMatrix &image,
     int rows_per_thread = newHeight / nthreads;
     std::thread *threads = new std::thread[nthreads];
 
-    // scale_img_singlethreaded(image, scaled_img, transform_inv, 0, newHeight);
-    for (int i = 0; i < nthreads; ++i) {
-        int start = i * rows_per_thread;
-        int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : newHeight;
-        threads[i] = std::thread(scale_img_singlethreaded,
-                                 std::ref(image),
-                                 std::ref(scaled_img),
-                                 std::ref(transform_inv),
-                                 start,
-                                 end);
-    }
+    scale_img_singlethreaded(image, scaled_img, transform_inv, 0, newHeight);
+    // for (int i = 0; i < nthreads; ++i) {
+    //     int start = i * rows_per_thread;
+    //     int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : newHeight;
+    //     threads[i] = std::thread(scale_img_singlethreaded,
+    //                              std::ref(image),
+    //                              std::ref(scaled_img),
+    //                              std::ref(transform_inv),
+    //                              start,
+    //                              end);
+    // }
 
-    for (int i = 0; i < nthreads; ++i) {
-        threads[i].join();
-    }
+    // for (int i = 0; i < nthreads; ++i) {
+    //     threads[i].join();
+    // }
 
     return scaled_img;
 }

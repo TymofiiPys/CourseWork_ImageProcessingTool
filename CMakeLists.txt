@@ -57,6 +57,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/scale.h
         src/imgproc/scale.cpp
         src/frontend/trdialog.h src/frontend/trdialog.cpp src/frontend/trdialog.ui
+        src/imgproc/box_filter.h
+        src/imgproc/box_filter.cpp
 
     )
 # Define target properties for Android with Qt 6 as:
