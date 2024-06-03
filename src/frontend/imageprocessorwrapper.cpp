@@ -14,7 +14,6 @@
 #include "../imgproc/togray.h"
 
 Eigen::MatrixX<RGBTuple> ImageProcessorWrapper::rgbImageToMatrix(const QImage &from) {
-    if (!from.isGrayscale()) {
         Eigen::MatrixX<RGBTuple> ret(from.height(), from.width());
         for (int y = 0; y < from.height(); y++) {
             const QRgb *line = reinterpret_cast<const QRgb *>(from.scanLine(y));
@@ -27,12 +26,9 @@ Eigen::MatrixX<RGBTuple> ImageProcessorWrapper::rgbImageToMatrix(const QImage &f
             }
         }
         return ret;
-    }
-    return Eigen::Matrix<RGBTuple, 1, 1>();
 }
 
 std::vector<std::vector<uint>> ImageProcessorWrapper::imageToVector(const QImage &from) {
-    if (from.isGrayscale()) {
         std::vector<std::vector<uint>> ret;
         for (int y = 0; y < from.height(); y++) {
             ret.push_back(std::vector<uint>());
@@ -43,8 +39,6 @@ std::vector<std::vector<uint>> ImageProcessorWrapper::imageToVector(const QImage
             }
         }
         return ret;
-    }
-    return std::vector<std::vector<uint>>();
 }
 
 void ImageProcessorWrapper::vectorToImage(QImage &dest, const std::vector<std::vector<uint>> &src) {
@@ -62,13 +56,11 @@ void ImageProcessorWrapper::vectorToImage(QImage &dest, const std::vector<std::v
 }
 
 void ImageProcessorWrapper::matrixToRgbImage(QImage &dest, const Eigen::MatrixX<RGBTuple> &src) {
-    if (!dest.isGrayscale()) {
-        for (int y = 0; y < src.rows(); ++y) {
-            QRgb *line = reinterpret_cast<QRgb *>(dest.scanLine(y));
-            for (int x = 0; x < src.cols(); ++x) {
-                RGBTuple pixel = src(y, x);
-                line[x] = qRgba(std::get<0>(pixel), std::get<1>(pixel), std::get<2>(pixel), 255);
-            }
+    for (int y = 0; y < src.rows(); ++y) {
+        QRgb *line = reinterpret_cast<QRgb *>(dest.scanLine(y));
+        for (int x = 0; x < src.cols(); ++x) {
+            RGBTuple pixel = src(y, x);
+            line[x] = qRgba(std::get<0>(pixel), std::get<1>(pixel), std::get<2>(pixel), 255);
         }
     }
 }
@@ -96,6 +88,8 @@ QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
 QImage ImageProcessorWrapper::scaleImage(QImage &img, double sX, double sY) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     Eigen::MatrixX<RGBTuple> ret = ImgProc::Transform::scale_img(imageV, sX, sY);
+    // qDebug() << "image " << std::get<0>(imageV(400, 400));
+    // qDebug() << "ret image " << std::get<0>(ret(800, 800));
     QImage scaled(ret.cols(), ret.rows(), QImage::Format_ARGB32);
     matrixToRgbImage(scaled, ret);
     return scaled;
