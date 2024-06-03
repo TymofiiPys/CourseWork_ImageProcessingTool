@@ -84,21 +84,21 @@ ImgProc::RGBMatrix ImgProc::Transform::scale_img(const RGBMatrix &image,
     int rows_per_thread = newHeight / nthreads;
     std::thread *threads = new std::thread[nthreads];
 
-    scale_img_singlethreaded(image, scaled_img, transform_inv, 0, newHeight);
-    // for (int i = 0; i < nthreads; ++i) {
-    //     int start = i * rows_per_thread;
-    //     int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : newHeight;
-    //     threads[i] = std::thread(scale_img_singlethreaded,
-    //                              std::ref(image),
-    //                              std::ref(scaled_img),
-    //                              std::ref(transform_inv),
-    //                              start,
-    //                              end);
-    // }
+    // scale_img_singlethreaded(image, scaled_img, transform_inv, 0, newHeight);
+    for (int i = 0; i < nthreads; ++i) {
+        int start = i * rows_per_thread;
+        int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : newHeight;
+        threads[i] = std::thread(scale_img_singlethreaded,
+                                 std::ref(image),
+                                 std::ref(scaled_img),
+                                 std::ref(transform_inv),
+                                 start,
+                                 end);
+    }
 
-    // for (int i = 0; i < nthreads; ++i) {
-    //     threads[i].join();
-    // }
+    for (int i = 0; i < nthreads; ++i) {
+        threads[i].join();
+    }
 
     return scaled_img;
 }

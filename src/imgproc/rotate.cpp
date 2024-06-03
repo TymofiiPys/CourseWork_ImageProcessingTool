@@ -2,13 +2,10 @@
 
 #include <cmath>
 #include <functional>
-#include <mutex>
 
 #include <Eigen/Dense>
 
 #include "../config/iptconfigmanager.h"
-
-std::mutex mutex;
 
 void ImgProc::rotate_img_singlethreaded(const RGBMatrix &image,
                                         RGBMatrix &rotated_image,
@@ -47,23 +44,27 @@ void ImgProc::rotate_img_singlethreaded(const RGBMatrix &image,
                                        + dx * (1 - dy) * std::get<2>(image(x2, y1))
                                        + (1 - dx) * dy * std::get<2>(image(x1, y2))
                                        + dx * dy * std::get<2>(image(x2, y2));
-                mutex.lock();
                 std::get<0>(rotated_image(x, y)) = std::round(interpolatedValue[0]);
                 std::get<1>(rotated_image(x, y)) = std::round(interpolatedValue[1]);
                 std::get<2>(rotated_image(x, y)) = std::round(interpolatedValue[2]);
-                mutex.unlock();
+            } else if ((oldCoords(0) == rows - 1 || oldCoords(1) == cols - 1) && oldCoords(0) >= 0
+                       && oldCoords(1) >= 0) {
+                std::get<0>(rotated_image(x, y)) = std::get<0>(
+                    image((int) oldCoords(0), (int) oldCoords(1)));
+                std::get<1>(rotated_image(x, y)) = std::get<1>(
+                    image((int) oldCoords(0), (int) oldCoords(1)));
+                std::get<2>(rotated_image(x, y)) = std::get<2>(
+                    image((int) oldCoords(0), (int) oldCoords(1)));
             } else {
-                mutex.lock();
                 std::get<0>(rotated_image(x, y)) = 0;
                 std::get<1>(rotated_image(x, y)) = 0;
                 std::get<2>(rotated_image(x, y)) = 0;
-                mutex.unlock();
             }
         }
     }
 }
 
-ImgProc::RGBMatrix ImgProc::Transform::rotate_img(RGBMatrix &rgb_image, double &angle) {
+ImgProc::RGBMatrix ImgProc::Transform::rotate_img(const RGBMatrix &rgb_image, double &angle) {
     double rads = angle * M_PI / 180;
 
     const int height = rgb_image.rows();

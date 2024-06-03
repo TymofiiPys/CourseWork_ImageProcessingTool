@@ -19,7 +19,7 @@ void rotate_img_singlethreaded(const RGBMatrix &image,
 //                                     const int &start,
 //                                     const int &end);
 
-RGBMatrix rotate_img(RGBMatrix &image, double &angle);
+RGBMatrix rotate_img(const RGBMatrix &image, double &angle);
 
 // void rotate_img_gray(std::vector<std::vector<unsigned int>> &image, double &angle);
 
