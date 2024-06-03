@@ -1,124 +1,73 @@
 #include "rotate.h"
 
-#include <algorithm>
 #include <cmath>
 #include <functional>
+#include <mutex>
 
 #include <Eigen/Dense>
 
 #include "../config/iptconfigmanager.h"
 
-// Bicubic kernel function
-float cubicInterpolate(float p0, float p1, float p2, float p3, float x) {
-    return p1
-           + 0.5 * x
-                 * (p2 - p0
-                    + x * (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3 + x * (3.0 * (p1 - p2) + p3 - p0)));
-}
-
-// Get pixel value with boundary check
-float getPixelValue(const std::vector<std::vector<std::vector<unsigned int>>> &img,
-                    int x,
-                    int y,
-                    int ch) {
-    x = std::clamp(x, 0, (int) img.size() - 1);
-    y = std::clamp(y, 0, (int) img[0].size() - 1);
-    return img[x][y][ch];
-}
-
-// Bicubic interpolation function
-float bicubicInterpolate(const std::vector<std::vector<std::vector<unsigned int>>> &img,
-                         float x,
-                         float y,
-                         int ch) {
-    int xInt = static_cast<int>(x);
-    int yInt = static_cast<int>(y);
-    float xDiff = x - xInt;
-    float yDiff = y - yInt;
-
-    float patch[4][4];
-    for (int i = -1; i <= 2; ++i) {
-        for (int j = -1; j <= 2; ++j) {
-            patch[i + 1][j + 1] = getPixelValue(img, xInt + i, yInt + j, ch);
-        }
-    }
-
-    float colInterpolated[4];
-    for (int i = 0; i < 4; ++i) {
-        colInterpolated[i] = cubicInterpolate(patch[i][0],
-                                              patch[i][1],
-                                              patch[i][2],
-                                              patch[i][3],
-                                              xDiff);
-    }
-    return std::clamp(cubicInterpolate(colInterpolated[0],
-                                       colInterpolated[1],
-                                       colInterpolated[2],
-                                       colInterpolated[3],
-                                       yDiff),
-                      0.0f,
-                      255.0f);
-}
+std::mutex mutex;
 
 void ImgProc::rotate_img_singlethreaded(const RGBMatrix &image,
                                         RGBMatrix &rotated_image,
-                                        const Eigen::Matrix3d &rotation,
-                                        const Eigen::Matrix3d &translation_before,
-                                        const Eigen::Matrix3d &translation_after,
-                                        const int &start,
-                                        const int &end) {
+                                        const Eigen::Matrix3d &transform_inv,
+                                        const int start,
+                                        const int end) {
     const int newRows = rotated_image.rows();
     const int newCols = rotated_image.cols();
     const int rows = image.rows();
     const int cols = image.cols();
 
-    const double centerY = cols / 2.0;
-    const double centerX = rows / 2.0;
-    const double newCenterY = newCols / 2.0;
-    const double newCenterX = newRows / 2.0;
-
     for (int x = start; x < end; ++x) {
-        qDebug() << "row " << x;
-        for (int y = 0; y < cols; ++y) {
-            Eigen::Vector3d oldCoords(x, y, 1);
-            Eigen::Vector3d newCoords = translation_after * rotation * translation_before
-                                        * oldCoords;
+        for (int y = 0; y < newCols; ++y) {
+            Eigen::Vector3d newCoords(x, y, 1);
 
-            // int x1 = std::floor(newCoords(0));
-            // int x2 = std::ceil(newCoords(0));
-            // int y1 = std::floor(newCoords(1));
-            // int y2 = std::ceil(originalY);
+            Eigen::Vector3d oldCoords = transform_inv * newCoords;
 
-            // double dx = originalX - x1;
-            // double dy = originalY - y1;
-            double interpolatedValue[3];
-            for (int c = 0; c < 3; ++c) {
-                // interpolatedValue[c] = (1 - dx) * (1 - dy) * image[x1][y1][c]
-                //                            + dx * (1 - dy) * image[x2][y1][c]
-                //                            + (1 - dx) * dy * image[x1][y2][c]
-                //                            + dx * dy * image[x2][y2][c];
-                // rotated_image(newCoords(0), newCoords(1)][c] = image[x][y][c];
-                // rotated_image[x][y][c] = bicubicInterpolate(image, originalX, originalY, c);
+            int x1 = std::floor(oldCoords(0));
+            int x2 = std::ceil(oldCoords(0));
+            int y1 = std::floor(oldCoords(1));
+            int y2 = std::ceil(oldCoords(1));
+            if (oldCoords(0) >= 0 && oldCoords(0) < rows - 1 && oldCoords(1) >= 0
+                && oldCoords(1) < cols - 1) {
+                double dx = oldCoords(0) - x1;
+                double dy = oldCoords(1) - y1;
+                double interpolatedValue[3];
+                interpolatedValue[0] = (1 - dx) * (1 - dy) * std::get<0>(image(x1, y1))
+                                       + dx * (1 - dy) * std::get<0>(image(x2, y1))
+                                       + (1 - dx) * dy * std::get<0>(image(x1, y2))
+                                       + dx * dy * std::get<0>(image(x2, y2));
+                interpolatedValue[1] = (1 - dx) * (1 - dy) * std::get<1>(image(x1, y1))
+                                       + dx * (1 - dy) * std::get<1>(image(x2, y1))
+                                       + (1 - dx) * dy * std::get<1>(image(x1, y2))
+                                       + dx * dy * std::get<1>(image(x2, y2));
+                interpolatedValue[2] = (1 - dx) * (1 - dy) * std::get<2>(image(x1, y1))
+                                       + dx * (1 - dy) * std::get<2>(image(x2, y1))
+                                       + (1 - dx) * dy * std::get<2>(image(x1, y2))
+                                       + dx * dy * std::get<2>(image(x2, y2));
+                mutex.lock();
+                std::get<0>(rotated_image(x, y)) = std::round(interpolatedValue[0]);
+                std::get<1>(rotated_image(x, y)) = std::round(interpolatedValue[1]);
+                std::get<2>(rotated_image(x, y)) = std::round(interpolatedValue[2]);
+                mutex.unlock();
+            } else {
+                mutex.lock();
+                std::get<0>(rotated_image(x, y)) = 0;
+                std::get<1>(rotated_image(x, y)) = 0;
+                std::get<2>(rotated_image(x, y)) = 0;
+                mutex.unlock();
             }
-            std::get<0>(
-                rotated_image(static_cast<int>(newCoords(0)), static_cast<int>(newCoords(1))))
-                = std::get<0>(image(x, y));
-            std::get<1>(
-                rotated_image(static_cast<int>(newCoords(0)), static_cast<int>(newCoords(1))))
-                = std::get<1>(image(x, y));
-            std::get<2>(
-                rotated_image(static_cast<int>(newCoords(0)), static_cast<int>(newCoords(1))))
-                = std::get<2>(image(x, y));
-            qDebug() << "col " << y;
         }
     }
 }
 
-void ImgProc::Transform::rotate_img(RGBMatrix &rgb_image, double &angle) {
+ImgProc::RGBMatrix ImgProc::Transform::rotate_img(RGBMatrix &rgb_image, double &angle) {
     double rads = angle * M_PI / 180;
 
-    const int &height = rgb_image.rows();
-    const int &width = rgb_image.cols();
+    const int height = rgb_image.rows();
+    const int width = rgb_image.cols();
 
     // Compute transformed image dimensions
     double sinTheta = std::sin(rads);
@@ -137,47 +86,36 @@ void ImgProc::Transform::rotate_img(RGBMatrix &rgb_image, double &angle) {
 
     RGBMatrix rotated_img(newHeight, newWidth);
 
-    // std::vector<std::vector<std::vector<unsigned int>>>
-    //     rotated_img(newHeight,
-    //                 std::vector<std::vector<unsigned int>>(newWidth, std::vector<unsigned int>(3)));
-    // // std::vector<std::vector<std::vector<unsigned int>>>
-    //     rotated_img(height,
-    //                 std::vector<std::vector<unsigned int>>(width, std::vector<unsigned int>(3)));
-
     Eigen::Matrix3d rotation_matrix;
     rotation_matrix << cosTheta, -sinTheta, 0, sinTheta, cosTheta, 0, 0, 0, 1;
     Eigen::Matrix3d translation_before;
     translation_before << 1, 0, -centerX, 0, 1, -centerY, 0, 0, 1;
     Eigen::Matrix3d translation_after;
     translation_after << 1, 0, newCenterX, 0, 1, newCenterY, 0, 0, 1;
-    rotate_img_singlethreaded(rgb_image,
-                              rotated_img,
-                              rotation_matrix,
-                              translation_before,
-                              translation_after,
-                              0,
-                              rotated_img.rows());
+    Eigen::Matrix3d total_transform = translation_after * rotation_matrix * translation_before;
+    Eigen::Matrix3d transform_inv = total_transform.inverse();
 
-    // unsigned int nthreads = IPTConfigManager::getInstance().getThreads();
-    // int rows_per_thread = rotated_img.size() / nthreads;
-    // std::thread *threads = new std::thread[nthreads];
+    unsigned int nthreads = IPTConfigManager::getInstance().getThreads();
+    int rows_per_thread = newHeight / nthreads;
+    std::thread *threads = new std::thread[nthreads];
 
-    // for (int i = 0; i < nthreads; ++i) {
-    //     int start = i * rows_per_thread;
-    //     int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : rgb_image.size();
-    //     threads[i] = std::thread(rotate_img_singlethreaded,
-    //                              std::ref(rgb_image),
-    //                              ref(rotated_img),
-    //                              angle,
-    //                              start,
-    //                              end);
-    // }
+    // rotate_img_singlethreaded(rgb_image, rotated_img, transform_inv, 0, newHeight);
+    for (int i = 0; i < nthreads; ++i) {
+        int start = i * rows_per_thread;
+        int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : newHeight;
+        threads[i] = std::thread(rotate_img_singlethreaded,
+                                 std::ref(rgb_image),
+                                 std::ref(rotated_img),
+                                 std::ref(transform_inv),
+                                 start,
+                                 end);
+    }
 
-    // for (int i = 0; i < nthreads; ++i) {
-    //     threads[i].join();
-    // }
+    for (int i = 0; i < nthreads; ++i) {
+        threads[i].join();
+    }
 
-    rgb_image = rotated_img;
+    return rotated_img;
 }
 
 // void ImgProc::rotate_img_singlethreaded_gray(const std::vector<std::vector<unsigned int>> &image,

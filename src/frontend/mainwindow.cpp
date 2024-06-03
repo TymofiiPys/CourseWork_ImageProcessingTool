@@ -145,7 +145,6 @@ void MainWindow::on_actionRotate_triggered() {
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);
     }
-    qDebug() << value;
 }
 
 void MainWindow::on_actionMirHor_triggered() {
@@ -215,4 +214,12 @@ void MainWindow::on_actionExpTransform_triggered() {
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);
     }
+}
+
+void MainWindow::on_actionScale_triggered() {
+    QImage neww = ImageProcessorWrapper::scaleImage(openedImage, 1.2, 1.2);
+    this->openedImage = neww;
+    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+    imageViewScene->setSceneRect(this->openedImage.rect());
+    ui->imageView->setScene(imageViewScene);
 }

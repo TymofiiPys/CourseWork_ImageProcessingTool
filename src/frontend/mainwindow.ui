@@ -94,6 +94,8 @@
     <addaction name="separator"/>
     <addaction name="actionMirHor"/>
     <addaction name="actionMirVer"/>
+    <addaction name="separator"/>
+    <addaction name="actionScale"/>
    </widget>
    <widget class="QMenu" name="menuFilter">
     <property name="title">
@@ -202,6 +204,11 @@
   <action name="actionExpTransform">
    <property name="text">
     <string>Експоненційне перетворення</string>
+   </property>
+  </action>
+  <action name="actionScale">
+   <property name="text">
+    <string>Масштаб</string>
    </property>
   </action>
  </widget>

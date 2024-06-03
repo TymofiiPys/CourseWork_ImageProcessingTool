@@ -65,6 +65,8 @@ class MainWindow : public QMainWindow {
 
     void on_actionExpTransform_triggered();
 
+    void on_actionScale_triggered();
+
   private:
     Ui::MainWindow *ui;
 

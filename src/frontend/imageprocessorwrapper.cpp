@@ -10,6 +10,7 @@
 #include "../imgproc/log_transform.h"
 #include "../imgproc/mirror.h"
 #include "../imgproc/rotate.h"
+#include "../imgproc/scale.h"
 #include "../imgproc/togray.h"
 
 Eigen::MatrixX<RGBTuple> ImageProcessorWrapper::rgbImageToMatrix(const QImage &from) {
@@ -75,8 +76,6 @@ void ImageProcessorWrapper::matrixToRgbImage(QImage &dest, const Eigen::MatrixX<
 void ImageProcessorWrapper::invertColor(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     ImgProc::Color::invert_color_rgb(imageV);
-    // std::vector<std::vector<std::vector<uint>>> imageV = {{{0u, 0u, 0u}, {255u, 255u, 255u}},
-    //                                                       {{255u, 255u, 255u}, {128u, 128u, 128u}}};
     matrixToRgbImage(img, imageV);
 }
 
@@ -88,15 +87,18 @@ void ImageProcessorWrapper::mirror(QImage &img, const bool horizontal = true) {
 
 QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
-    ImgProc::Transform::rotate_img(imageV, angle);
-    QImage rotated(imageV.cols(), imageV.rows(), img.format());
-    matrixToRgbImage(rotated, imageV);
+    Eigen::MatrixX<RGBTuple> ret = ImgProc::Transform::rotate_img(imageV, angle);
+    QImage rotated(ret.cols(), ret.rows(), QImage::Format_ARGB32);
+    matrixToRgbImage(rotated, ret);
     return rotated;
-    // std::vector<std::vector<uint>> imageV = imageToVector(img);
-    // ImgProc::Transform::rotate_img_gray(imageV, angle);
-    // QImage rotated(imageV[0].size(), imageV.size(), QImage::Format_ARGB32);
-    // vectorToImage(rotated, imageV);
-    // return rotated;
+}
+
+QImage ImageProcessorWrapper::scaleImage(QImage &img, double sX, double sY) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    Eigen::MatrixX<RGBTuple> ret = ImgProc::Transform::scale_img(imageV, sX, sY);
+    QImage scaled(ret.cols(), ret.rows(), QImage::Format_ARGB32);
+    matrixToRgbImage(scaled, ret);
+    return scaled;
 }
 
 void ImageProcessorWrapper::toGray(QImage &img) {

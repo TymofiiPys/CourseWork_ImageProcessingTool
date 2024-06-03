@@ -10,12 +10,10 @@ QStringList getRecentImages() {
     if (file.open(QIODeviceBase::ReadOnly | QIODeviceBase::Text)) {
         QTextStream textStream(&file);
         QStringList filenameList = textStream.readAll().split("\n");
-        qDebug() << "Opened and read successfully";
         file.close();
         return filenameList;
     } else {
         file.open(QIODeviceBase::NewOnly);
-        qDebug() << "Created new file";
         file.close();
         QStringList list("oopsie");
         return list;

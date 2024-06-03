@@ -19,6 +19,7 @@ class ImageProcessorWrapper {
     static void invertColor(QImage &);
     static void mirror(QImage &, const bool horizontal);
     static QImage rotateImage(QImage &, double &angle);
+    static QImage scaleImage(QImage &, double sX, double sY);
     static void toGray(QImage &);
     static void histEq(QImage &, const bool red, const bool green, const bool blue);
     static void logTransform(
