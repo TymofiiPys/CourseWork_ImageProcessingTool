@@ -1,5 +1,7 @@
 #include "imageprocessorwrapper.h"
 
+#include <chrono>
+
 #include <QColor>
 #include <QDebug>
 
@@ -69,45 +71,73 @@ void ImageProcessorWrapper::matrixToRgbImage(QImage &dest, const Eigen::MatrixX<
 
 void ImageProcessorWrapper::invertColor(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::Color::invert_color_rgb(imageV);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 void ImageProcessorWrapper::histEq(QImage &img, const bool red, const bool green, const bool blue) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::Color::hist_eq(imageV, red, green, blue);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 void ImageProcessorWrapper::logTransform(
     QImage &img, const double c, const bool red, const bool green, const bool blue) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::Color::log_transform(imageV, c, red, green, blue);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 void ImageProcessorWrapper::expTransform(
     QImage &img, const double c, const bool red, const bool green, const bool blue) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::Color::exp_transform(imageV, c, red, green, blue);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 void ImageProcessorWrapper::toGray(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::Color::to_gray(imageV);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 void ImageProcessorWrapper::mirror(QImage &img, const bool horizontal = true) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::Transform::mirror(imageV, horizontal);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     Eigen::MatrixX<RGBTuple> ret = ImgProc::Transform::rotate_img(imageV, angle);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     QImage rotated(ret.cols(), ret.rows(), QImage::Format_ARGB32);
     matrixToRgbImage(rotated, ret);
     return rotated;
@@ -115,7 +145,11 @@ QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
 
 QImage ImageProcessorWrapper::scaleImage(QImage &img, double sX, double sY) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     Eigen::MatrixX<RGBTuple> ret = ImgProc::Transform::scale_img(imageV, sX, sY);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     QImage scaled(ret.cols(), ret.rows(), QImage::Format_ARGB32);
     matrixToRgbImage(scaled, ret);
     return scaled;
@@ -123,19 +157,31 @@ QImage ImageProcessorWrapper::scaleImage(QImage &img, double sX, double sY) {
 
 void ImageProcessorWrapper::boxFilter(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::box_filter(imageV, 3, 1);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 void ImageProcessorWrapper::gaussBlur(QImage &img, const int radius) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::gauss_filter(imageV, 2 * radius + 1);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
 void ImageProcessorWrapper::laplacian(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    const auto start{std::chrono::steady_clock::now()};
     ImgProc::laplacian(imageV, 1);
+    const auto end{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsed_seconds{end - start};
+    qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
     matrixToRgbImage(img, imageV);
 }
 
