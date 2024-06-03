@@ -80,8 +80,6 @@ void ImageProcessorWrapper::mirror(QImage &img, const bool horizontal = true) {
 QImage ImageProcessorWrapper::rotateImage(QImage &img, double &angle) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     Eigen::MatrixX<RGBTuple> ret = ImgProc::Transform::rotate_img(imageV, angle);
-    qDebug() << "image " << std::get<0>(imageV(0, 0));
-    qDebug() << "ret image " << std::get<0>(ret(3900, 0));
     QImage rotated(ret.cols(), ret.rows(), QImage::Format_ARGB32);
     matrixToRgbImage(rotated, ret);
     return rotated;

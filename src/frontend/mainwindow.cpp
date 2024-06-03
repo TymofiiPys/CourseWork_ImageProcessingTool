@@ -127,6 +127,7 @@ void MainWindow::on_actionSaveAs_triggered() {
 
 void MainWindow::on_actionInvertColor_triggered() {
     ImageProcessorWrapper::invertColor(openedImage);
+    imageViewScene->clear();
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
@@ -142,6 +143,7 @@ void MainWindow::on_actionRotate_triggered() {
             value += 360;
         QImage neww = ImageProcessorWrapper::rotateImage(openedImage, value);
         this->openedImage = neww;
+        imageViewScene->clear();
         imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);
@@ -150,6 +152,7 @@ void MainWindow::on_actionRotate_triggered() {
 
 void MainWindow::on_actionMirHor_triggered() {
     ImageProcessorWrapper::mirror(openedImage, true);
+    imageViewScene->clear();
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
@@ -157,6 +160,7 @@ void MainWindow::on_actionMirHor_triggered() {
 
 void MainWindow::on_actionMirVer_triggered() {
     ImageProcessorWrapper::mirror(openedImage, false);
+    imageViewScene->clear();
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
@@ -164,6 +168,7 @@ void MainWindow::on_actionMirVer_triggered() {
 
 void MainWindow::on_actionToGray_triggered() {
     ImageProcessorWrapper::toGray(openedImage);
+    imageViewScene->clear();
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
@@ -176,6 +181,7 @@ void MainWindow::on_actionHistEq_triggered() {
         const bool &green = dialog.getGreen();
         const bool &blue = dialog.getBlue();
         ImageProcessorWrapper::histEq(openedImage, red, green, blue);
+        imageViewScene->clear();
         imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);
@@ -190,6 +196,7 @@ void MainWindow::on_actionLogTransform_triggered() {
         const bool &blue = dialog.getBlue();
         const double &c = dialog.getC();
         ImageProcessorWrapper::logTransform(openedImage, c, red, green, blue);
+        imageViewScene->clear();
         imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);
@@ -198,6 +205,7 @@ void MainWindow::on_actionLogTransform_triggered() {
 
 void MainWindow::on_actionWeightAver_triggered() {
     ImageProcessorWrapper::weightedAverage(openedImage);
+    imageViewScene->clear();
     imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
     imageViewScene->setSceneRect(this->openedImage.rect());
     ui->imageView->setScene(imageViewScene);
@@ -211,6 +219,7 @@ void MainWindow::on_actionExpTransform_triggered() {
         const bool &blue = dialog.getBlue();
         const double &c = dialog.getC();
         ImageProcessorWrapper::expTransform(openedImage, c, red, green, blue);
+        imageViewScene->clear();
         imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);
@@ -224,6 +233,7 @@ void MainWindow::on_actionScale_triggered() {
         const double &sY = dialog.getSY();
         QImage neww = ImageProcessorWrapper::scaleImage(openedImage, sX, sY);
         this->openedImage = neww;
+        imageViewScene->clear();
         imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
         imageViewScene->setSceneRect(this->openedImage.rect());
         ui->imageView->setScene(imageViewScene);

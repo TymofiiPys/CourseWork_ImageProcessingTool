@@ -12,7 +12,7 @@ void ImgProc::rotate_img_singlethreaded(const RGBMatrix &image,
                                         const Eigen::Matrix3d &transform_inv,
                                         const int start,
                                         const int end) {
-    const int newRows = rotated_image.rows();
+    // const int newRows = rotated_image.rows();
     const int newCols = rotated_image.cols();
     const int rows = image.rows();
     const int cols = image.cols();
@@ -47,7 +47,7 @@ void ImgProc::rotate_img_singlethreaded(const RGBMatrix &image,
                 std::get<0>(rotated_image(x, y)) = std::round(interpolatedValue[0]);
                 std::get<1>(rotated_image(x, y)) = std::round(interpolatedValue[1]);
                 std::get<2>(rotated_image(x, y)) = std::round(interpolatedValue[2]);
-            } else if ((oldCoords(0) == rows - 1 || oldCoords(1) == cols - 1) && oldCoords(0) >= 0
+            } /*else if ((oldCoords(0) == rows - 1 || oldCoords(1) == cols - 1) && oldCoords(0) >= 0
                        && oldCoords(1) >= 0) {
                 std::get<0>(rotated_image(x, y)) = std::get<0>(
                     image((int) oldCoords(0), (int) oldCoords(1)));
@@ -55,7 +55,8 @@ void ImgProc::rotate_img_singlethreaded(const RGBMatrix &image,
                     image((int) oldCoords(0), (int) oldCoords(1)));
                 std::get<2>(rotated_image(x, y)) = std::get<2>(
                     image((int) oldCoords(0), (int) oldCoords(1)));
-            } else {
+            }*/
+            else {
                 std::get<0>(rotated_image(x, y)) = 0;
                 std::get<1>(rotated_image(x, y)) = 0;
                 std::get<2>(rotated_image(x, y)) = 0;
@@ -80,10 +81,10 @@ ImgProc::RGBMatrix ImgProc::Transform::rotate_img(const RGBMatrix &rgb_image, do
     const int newWidth = std::ceil(std::abs(width * cosTheta) + std::abs(height * sinTheta));
     const int newHeight = std::ceil(std::abs(width * sinTheta) + std::abs(height * cosTheta));
 
-    const int centerX = width / 2.0;
-    const int centerY = height / 2.0;
-    const int newCenterX = newWidth / 2.0;
-    const int newCenterY = newHeight / 2.0;
+    const int centerX = height / 2.0;
+    const int centerY = width / 2.0;
+    const int newCenterX = newHeight / 2.0;
+    const int newCenterY = newWidth / 2.0;
 
     RGBMatrix rotated_img(newHeight, newWidth);
 

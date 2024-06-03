@@ -10,6 +10,7 @@ inline namespace Transform {
 void rotate_img_singlethreaded(const RGBMatrix &image,
                                RGBMatrix &rotated_image,
                                const Eigen::Matrix3d &transform_inv,
+                               // const double angle,
                                const int start,
                                const int end);
 
