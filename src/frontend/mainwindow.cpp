@@ -12,6 +12,7 @@
 #include "ltdialog.h"
 #include "recentimages.h"
 #include "rotatedialog.h"
+#include "trdialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -217,9 +218,14 @@ void MainWindow::on_actionExpTransform_triggered() {
 }
 
 void MainWindow::on_actionScale_triggered() {
-    QImage neww = ImageProcessorWrapper::scaleImage(openedImage, 1.2, 1.2);
-    this->openedImage = neww;
-    imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
-    imageViewScene->setSceneRect(this->openedImage.rect());
-    ui->imageView->setScene(imageViewScene);
+    TRDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        const double &sX = dialog.getSX();
+        const double &sY = dialog.getSY();
+        QImage neww = ImageProcessorWrapper::scaleImage(openedImage, sX, sY);
+        this->openedImage = neww;
+        imageViewScene->addPixmap(QPixmap::fromImage(this->openedImage));
+        imageViewScene->setSceneRect(this->openedImage.rect());
+        ui->imageView->setScene(imageViewScene);
+    }
 }

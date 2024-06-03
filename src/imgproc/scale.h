@@ -10,8 +10,8 @@ inline namespace Transform {
 void scale_img_singlethreaded(const RGBMatrix &image,
                               RGBMatrix &scaled_image,
                               const Eigen::Matrix3d &transform_inv,
-                              const int &start,
-                              const int &end);
+                              const int start,
+                              const int end);
 
 RGBMatrix scale_img(RGBMatrix &image, const double &sX, const double &sY);
 

@@ -56,6 +56,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/frontend/etdialog.h src/frontend/etdialog.cpp src/frontend/etdialog.ui
         src/imgproc/scale.h
         src/imgproc/scale.cpp
+        src/frontend/trdialog.h src/frontend/trdialog.cpp src/frontend/trdialog.ui
 
     )
 # Define target properties for Android with Qt 6 as:

@@ -9,8 +9,8 @@
 void ImgProc::Transform::scale_img_singlethreaded(const RGBMatrix &image,
                                                   RGBMatrix &scaled_image,
                                                   const Eigen::Matrix3d &transform_inv,
-                                                  const int &start,
-                                                  const int &end) {
+                                                  const int start,
+                                                  const int end) {
     const int newRows = scaled_image.rows();
     const int newCols = scaled_image.cols();
     const int rows = image.rows();
@@ -76,21 +76,21 @@ ImgProc::RGBMatrix ImgProc::Transform::scale_img(RGBMatrix &image,
     int rows_per_thread = newHeight / nthreads;
     std::thread *threads = new std::thread[nthreads];
 
-    scale_img_singlethreaded(image, scaled_img, transform_inv, 0, newHeight);
-    // for (int i = 0; i < nthreads; ++i) {
-    //     int start = i * rows_per_thread;
-    //     int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : /*new*/ height;
-    //     threads[i] = std::thread(scale_img_singlethreaded,
-    //                              std::ref(image),
-    //                              std::ref(scaled_img),
-    //                              std::ref(transform_inv),
-    //                              std::ref(start),
-    //                              std::ref(end));
-    // }
+    // scale_img_singlethreaded(image, scaled_img, transform_inv, 0, newHeight);
+    for (int i = 0; i < nthreads; ++i) {
+        int start = i * rows_per_thread;
+        int end = (i < nthreads - 1) ? (i + 1) * rows_per_thread : newHeight;
+        threads[i] = std::thread(scale_img_singlethreaded,
+                                 std::ref(image),
+                                 std::ref(scaled_img),
+                                 std::ref(transform_inv),
+                                 start,
+                                 end);
+    }
 
-    // for (int i = 0; i < nthreads; ++i) {
-    //     threads[i].join();
-    // }
+    for (int i = 0; i < nthreads; ++i) {
+        threads[i].join();
+    }
 
     return scaled_img;
 }
