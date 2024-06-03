@@ -61,11 +61,15 @@ class MainWindow : public QMainWindow {
 
     void on_actionLogTransform_triggered();
 
-    void on_actionWeightAver_triggered();
-
     void on_actionExpTransform_triggered();
 
     void on_actionScale_triggered();
+
+    void on_actionBoxFilter_triggered();
+
+    void on_actionGaussBlur_triggered();
+
+    void on_actionLaplacian_triggered();
 
   private:
     Ui::MainWindow *ui;
@@ -88,5 +92,7 @@ class MainWindow : public QMainWindow {
     void getRecentImagesToMenu();
 
     void openImage(const QString &filename);
+
+    void refreshView() const;
 };
 #endif // MAINWINDOW_H

@@ -11,6 +11,13 @@ const int K = 1;
 
 const int sigma_multiply = 3;
 
+void gauss_filter_singlethreaded(const RGBMatrix &img,
+                                 RGBMatrix &filtered,
+                                 const Eigen::MatrixXd &kernel,
+                                 const int box_size,
+                                 const int start,
+                                 const int end);
+
 Eigen::MatrixXd compute_kernel(const int &box_size);
 
 void gauss_filter(RGBMatrix &img, int box_size);

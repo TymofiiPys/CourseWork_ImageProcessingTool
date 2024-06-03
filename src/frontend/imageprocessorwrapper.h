@@ -17,16 +17,18 @@ class ImageProcessorWrapper {
 
   public:
     static void invertColor(QImage &);
-    static void mirror(QImage &, const bool horizontal);
-    static QImage rotateImage(QImage &, double &angle);
-    static QImage scaleImage(QImage &, double sX, double sY);
     static void toGray(QImage &);
     static void histEq(QImage &, const bool red, const bool green, const bool blue);
     static void logTransform(
         QImage &, const double c, const bool red, const bool green, const bool blue);
     static void expTransform(
         QImage &, const double c, const bool red, const bool green, const bool blue);
-    static void weightedAverage(QImage &);
+    static void mirror(QImage &, const bool horizontal);
+    static QImage rotateImage(QImage &, double &angle);
+    static QImage scaleImage(QImage &, double sX, double sY);
+    static void boxFilter(QImage &);
+    static void gaussBlur(QImage &, const int radius);
+    static void laplacian(QImage &);
 };
 
 #endif // IMAGEPROCESSORWRAPPER_H

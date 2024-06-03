@@ -3,10 +3,12 @@
 #include <QColor>
 #include <QDebug>
 
-#include "../imgproc/averaging.h"
+#include "../imgproc/box_filter.h"
 #include "../imgproc/exp_transform.h"
+#include "../imgproc/gauss_filter.h"
 #include "../imgproc/histeq.h"
 #include "../imgproc/invert.h"
+#include "../imgproc/laplacian.h"
 #include "../imgproc/log_transform.h"
 #include "../imgproc/mirror.h"
 #include "../imgproc/rotate.h"
@@ -71,6 +73,32 @@ void ImageProcessorWrapper::invertColor(QImage &img) {
     matrixToRgbImage(img, imageV);
 }
 
+void ImageProcessorWrapper::histEq(QImage &img, const bool red, const bool green, const bool blue) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::hist_eq(imageV, red, green, blue);
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::logTransform(
+    QImage &img, const double c, const bool red, const bool green, const bool blue) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::log_transform(imageV, c, red, green, blue);
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::expTransform(
+    QImage &img, const double c, const bool red, const bool green, const bool blue) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::exp_transform(imageV, c, red, green, blue);
+    matrixToRgbImage(img, imageV);
+}
+
+void ImageProcessorWrapper::toGray(QImage &img) {
+    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+    ImgProc::Color::to_gray(imageV);
+    matrixToRgbImage(img, imageV);
+}
+
 void ImageProcessorWrapper::mirror(QImage &img, const bool horizontal = true) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     ImgProc::Transform::mirror(imageV, horizontal);
@@ -93,34 +121,26 @@ QImage ImageProcessorWrapper::scaleImage(QImage &img, double sX, double sY) {
     return scaled;
 }
 
-void ImageProcessorWrapper::toGray(QImage &img) {
+void ImageProcessorWrapper::boxFilter(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
-    ImgProc::Color::to_gray(imageV);
+    ImgProc::box_filter(imageV, 3, 1);
     matrixToRgbImage(img, imageV);
 }
 
-void ImageProcessorWrapper::histEq(QImage &img, const bool red, const bool green, const bool blue) {
+void ImageProcessorWrapper::gaussBlur(QImage &img, const int radius) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
-    ImgProc::Color::hist_eq(imageV, red, green, blue);
+    ImgProc::gauss_filter(imageV, 2 * radius + 1);
     matrixToRgbImage(img, imageV);
 }
 
-void ImageProcessorWrapper::logTransform(
-    QImage &img, const double c, const bool red, const bool green, const bool blue) {
+void ImageProcessorWrapper::laplacian(QImage &img) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
-    ImgProc::Color::log_transform(imageV, c, red, green, blue);
+    ImgProc::laplacian(imageV, 1);
     matrixToRgbImage(img, imageV);
 }
 
-void ImageProcessorWrapper::expTransform(
-    QImage &img, const double c, const bool red, const bool green, const bool blue) {
-    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
-    ImgProc::Color::exp_transform(imageV, c, red, green, blue);
-    matrixToRgbImage(img, imageV);
-}
-
-void ImageProcessorWrapper::weightedAverage(QImage &img) {
-    Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
-    ImgProc::Filter::weighted_averaging(imageV);
-    matrixToRgbImage(img, imageV);
-}
+// void ImageProcessorWrapper::weightedAverage(QImage &img) {
+//     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
+//     ImgProc::Filter::weighted_averaging(imageV);
+//     matrixToRgbImage(img, imageV);
+// }

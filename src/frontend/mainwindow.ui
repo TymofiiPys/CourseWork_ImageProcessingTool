@@ -101,7 +101,9 @@
     <property name="title">
      <string>Фільтр</string>
     </property>
-    <addaction name="actionWeightAver"/>
+    <addaction name="actionBoxFilter"/>
+    <addaction name="actionGaussBlur"/>
+    <addaction name="actionLaplacian"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -196,9 +198,9 @@
     <string>Логарифмічне перетворення</string>
    </property>
   </action>
-  <action name="actionWeightAver">
+  <action name="actionBoxFilter">
    <property name="text">
-    <string>Середнє</string>
+    <string>Коробковий фільтр</string>
    </property>
   </action>
   <action name="actionExpTransform">
@@ -209,6 +211,16 @@
   <action name="actionScale">
    <property name="text">
     <string>Масштаб</string>
+   </property>
+  </action>
+  <action name="actionGaussBlur">
+   <property name="text">
+    <string>Гаусівське розмиття</string>
+   </property>
+  </action>
+  <action name="actionLaplacian">
+   <property name="text">
+    <string>Лаплас</string>
    </property>
   </action>
  </widget>
