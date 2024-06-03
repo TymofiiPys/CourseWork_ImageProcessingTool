@@ -16,7 +16,7 @@ class ImageProcessorWrapper {
     static void matrixToRgbImage(QImage &dest, const Eigen::MatrixX<RGBTuple> &);
 
   public:
-    static void invertColor(QImage &);
+    static void invertColor(QImage &, const bool red, const bool green, const bool blue);
     static void toGray(QImage &);
     static void histEq(QImage &, const bool red, const bool green, const bool blue);
     static void logTransform(

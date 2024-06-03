@@ -133,8 +133,14 @@ void MainWindow::on_actionSaveAs_triggered() {
 }
 
 void MainWindow::on_actionInvertColor_triggered() {
-    ImageProcessorWrapper::invertColor(openedImage);
-    this->refreshView();
+    ChooseChannelDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        const bool &red = dialog.getRed();
+        const bool &green = dialog.getGreen();
+        const bool &blue = dialog.getBlue();
+        ImageProcessorWrapper::invertColor(openedImage, red, green, blue);
+        this->refreshView();
+    }
 }
 
 void MainWindow::on_actionRotate_triggered() {

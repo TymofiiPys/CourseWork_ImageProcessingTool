@@ -15,9 +15,14 @@ void invert_color_singlethreaded(std::vector<std::vector<unsigned int>> &);
 
 void invert_color(std::vector<std::vector<unsigned int>> &image);
 
-void invert_rgb_color_singlethreaded(RGBMatrix &rgb_image, const int &start, const int &end);
+void invert_rgb_color_singlethreaded(RGBMatrix &rgb_image,
+                                     const bool &red,
+                                     const bool &green,
+                                     const bool &blue,
+                                     const int &start,
+                                     const int &end);
 
-void invert_color_rgb(RGBMatrix &rgb_image);
+void invert_color_rgb(RGBMatrix &rgb_image, const bool &red, const bool &green, const bool &blue);
 
 } // namespace Color
 

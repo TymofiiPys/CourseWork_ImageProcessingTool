@@ -69,10 +69,13 @@ void ImageProcessorWrapper::matrixToRgbImage(QImage &dest, const Eigen::MatrixX<
     }
 }
 
-void ImageProcessorWrapper::invertColor(QImage &img) {
+void ImageProcessorWrapper::invertColor(QImage &img,
+                                        const bool red,
+                                        const bool green,
+                                        const bool blue) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     const auto start{std::chrono::steady_clock::now()};
-    ImgProc::Color::invert_color_rgb(imageV);
+    ImgProc::Color::invert_color_rgb(imageV, red, green, blue);
     const auto end{std::chrono::steady_clock::now()};
     const std::chrono::duration<double> elapsed_seconds{end - start};
     qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
