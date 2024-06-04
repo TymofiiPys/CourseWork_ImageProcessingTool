@@ -2,7 +2,7 @@
 
 #include "../config/iptconfigmanager.h"
 
-Eigen::MatrixXd ImgProc::Filter::compute_kernel(const int &box_size, const int coef) {
+Eigen::MatrixXd ImgProc::Filter::compute_kernel(const int &box_size, const double coef) {
     Eigen::MatrixXd kernel(box_size, box_size);
     for (int i = 0; i < box_size; ++i) {
         for (int j = 0; j < box_size; ++j) {
@@ -44,7 +44,7 @@ void ImgProc::box_filter_singlethreaded(const RGBMatrix &img,
     }
 }
 
-void ImgProc::Filter::box_filter(RGBMatrix &img, int box_size, const int coef) {
+void ImgProc::Filter::box_filter(RGBMatrix &img, int box_size, const double coef) {
     if (box_size % 2 == 0)
         box_size--;
     Eigen::MatrixXd kernel = compute_kernel(box_size, coef);

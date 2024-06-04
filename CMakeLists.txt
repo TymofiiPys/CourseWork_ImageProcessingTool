@@ -61,6 +61,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/imgproc/box_filter.cpp
         src/imgproc/laplacian.h
         src/imgproc/laplacian.cpp
+        src/frontend/bfdialog.h src/frontend/bfdialog.cpp src/frontend/bfdialog.ui
+        src/frontend/gfdialog.h src/frontend/gfdialog.cpp src/frontend/gfdialog.ui
+        src/frontend/laplfiltdialog.h src/frontend/laplfiltdialog.cpp src/frontend/laplfiltdialog.ui
 
     )
 # Define target properties for Android with Qt 6 as:

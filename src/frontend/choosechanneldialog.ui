@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Оберіть канали для еквалізації:</string>
+   <string>Оберіть канали:</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

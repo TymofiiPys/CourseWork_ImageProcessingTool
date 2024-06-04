@@ -14,9 +14,9 @@ void box_filter_singlethreaded(const RGBMatrix &img,
                                const int start,
                                const int end);
 
-Eigen::MatrixXd compute_kernel(const int &box_size, const int coef);
+Eigen::MatrixXd compute_kernel(const int &box_size, const double coef);
 
-void box_filter(RGBMatrix &img, int box_size, const int coef);
+void box_filter(RGBMatrix &img, int box_size, const double coef);
 
 } // namespace Filter
 

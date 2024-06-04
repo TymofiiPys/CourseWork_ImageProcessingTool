@@ -158,10 +158,10 @@ QImage ImageProcessorWrapper::scaleImage(QImage &img, double sX, double sY) {
     return scaled;
 }
 
-void ImageProcessorWrapper::boxFilter(QImage &img) {
+void ImageProcessorWrapper::boxFilter(QImage &img, const int size, const double coef) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     const auto start{std::chrono::steady_clock::now()};
-    ImgProc::box_filter(imageV, 3, 1);
+    ImgProc::box_filter(imageV, size, coef);
     const auto end{std::chrono::steady_clock::now()};
     const std::chrono::duration<double> elapsed_seconds{end - start};
     qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';
@@ -178,10 +178,10 @@ void ImageProcessorWrapper::gaussBlur(QImage &img, const int radius) {
     matrixToRgbImage(img, imageV);
 }
 
-void ImageProcessorWrapper::laplacian(QImage &img) {
+void ImageProcessorWrapper::laplacian(QImage &img, const double c) {
     Eigen::MatrixX<RGBTuple> imageV = rgbImageToMatrix(img);
     const auto start{std::chrono::steady_clock::now()};
-    ImgProc::laplacian(imageV, 1);
+    ImgProc::laplacian(imageV, c);
     const auto end{std::chrono::steady_clock::now()};
     const std::chrono::duration<double> elapsed_seconds{end - start};
     qDebug() << "\nElapsed time: " << elapsed_seconds << '\n';

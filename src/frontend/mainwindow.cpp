@@ -7,8 +7,11 @@
 #include <QMessageBox>
 #include <QString>
 
+#include "bfdialog.h"
 #include "choosechanneldialog.h"
+#include "gfdialog.h"
 #include "imageprocessorwrapper.h"
+#include "laplfiltdialog.h"
 #include "ltdialog.h"
 #include "recentimages.h"
 #include "rotatedialog.h"
@@ -219,16 +222,29 @@ void MainWindow::on_actionScale_triggered() {
 }
 
 void MainWindow::on_actionBoxFilter_triggered() {
-    ImageProcessorWrapper::boxFilter(openedImage);
-    this->refreshView();
+    BFDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        const int &boxSize = dialog.getSize();
+        const double &coef = dialog.getCoef();
+        ImageProcessorWrapper::boxFilter(openedImage, boxSize, coef);
+        this->refreshView();
+    }
 }
 
 void MainWindow::on_actionGaussBlur_triggered() {
-    ImageProcessorWrapper::gaussBlur(openedImage, 3);
-    this->refreshView();
+    GFDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        const int &radius = dialog.getRadius();
+        ImageProcessorWrapper::gaussBlur(openedImage, radius);
+        this->refreshView();
+    }
 }
 
 void MainWindow::on_actionLaplacian_triggered() {
-    ImageProcessorWrapper::laplacian(openedImage);
-    this->refreshView();
+    LaplFiltDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        const double &coef = dialog.getC();
+        ImageProcessorWrapper::laplacian(openedImage, coef);
+        this->refreshView();
+    }
 }

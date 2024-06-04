@@ -26,9 +26,9 @@ class ImageProcessorWrapper {
     static void mirror(QImage &, const bool horizontal);
     static QImage rotateImage(QImage &, double &angle);
     static QImage scaleImage(QImage &, double sX, double sY);
-    static void boxFilter(QImage &);
+    static void boxFilter(QImage &, const int size, const double coef);
     static void gaussBlur(QImage &, const int radius);
-    static void laplacian(QImage &);
+    static void laplacian(QImage &, const double c);
 };
 
 #endif // IMAGEPROCESSORWRAPPER_H

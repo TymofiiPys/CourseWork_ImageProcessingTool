@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ETDialog</class>
- <widget class="QDialog" name="ETDialog">
+ <class>BFDialog</class>
+ <widget class="QDialog" name="BFDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>377</width>
-    <height>230</height>
+    <width>323</width>
+    <height>148</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Експоненційне перетворення</string>
+   <string>Коробковий фільтр</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Значення c (множник) :</string>
+      <string>Розмірність фільтру:</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -31,38 +31,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEditC"/>
+    <widget class="QLineEdit" name="lineEditSize"/>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Значення a (основа степеня (1+a)):</string>
+      <string>Коефіцієнт фільтру</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEditA"/>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxRed">
-     <property name="text">
-      <string>Червоний</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxGreen">
-     <property name="text">
-      <string>Зелений</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxBlue">
-     <property name="text">
-      <string>Синій</string>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="lineEditC"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -81,7 +60,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ETDialog</receiver>
+   <receiver>BFDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -97,7 +76,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ETDialog</receiver>
+   <receiver>BFDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
