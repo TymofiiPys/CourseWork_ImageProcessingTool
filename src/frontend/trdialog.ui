@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEditSy"/>
+    <widget class="QLineEdit" name="lineEditSx"/>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
@@ -41,7 +41,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEditSx"/>
+    <widget class="QLineEdit" name="lineEditSy"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
